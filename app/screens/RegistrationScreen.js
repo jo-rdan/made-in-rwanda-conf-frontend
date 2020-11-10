@@ -7,6 +7,7 @@ import {
   Paragraph,
   Dialog,
   Portal,
+  RadioButton,
 } from "react-native-paper";
 
 function RegistrationScreen(props) {
@@ -21,6 +22,7 @@ function RegistrationScreen(props) {
   });
   const [focus, setFocus] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
+  const [checked, setChecked] = React.useState("6+ ");
 
   const showDialog = () => setVisible(true);
 
@@ -80,6 +82,8 @@ function RegistrationScreen(props) {
               color: "#696666",
               padding: 12,
               fontSize: 10,
+              borderBottomWidth: 1,
+              borderBottomColor: "#696666",
             }}
             onPress={() => setVisible(true)}
           >
@@ -89,11 +93,23 @@ function RegistrationScreen(props) {
             <Dialog visible={visible} onDismiss={hideDialog}>
               <Dialog.Title>Choose an option</Dialog.Title>
               <Dialog.Content>
-                <Paragraph>This is simple dialog</Paragraph>
+                <View>
+                  <Text>Seller</Text>
+                  <RadioButton
+                    value="first"
+                    status={checked === "first" ? "checked" : "unchecked"}
+                    onPress={() => setChecked("first")}
+                  />
+                </View>
+                <View>
+                  <Text>Guest</Text>
+                  <RadioButton
+                    value="second"
+                    status={checked === "second" ? "checked" : "unchecked"}
+                    onPress={() => setChecked("second")}
+                  />
+                </View>
               </Dialog.Content>
-              <Dialog.Actions>
-                <Button onPress={hideDialog}>Done</Button>
-              </Dialog.Actions>
             </Dialog>
           </Portal>
         </View>
@@ -104,7 +120,7 @@ function RegistrationScreen(props) {
             color="#FF0F00"
             style={{ borderRadius: 50 }}
           >
-            Press me
+            Create account
           </Button>
         </View>
       </View>
