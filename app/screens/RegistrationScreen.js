@@ -13,12 +13,13 @@ import {
 function RegistrationScreen(props) {
   const [text, setText] = React.useState("");
   const [userData, setUserData] = React.useState({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
+    fname: "",
+    lname: "",
+    phone: "",
     email: "",
     password: "",
-    role: "guest",
+    password_confirmation: "",
+    role: "",
   });
   const [focus, setFocus] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
@@ -27,6 +28,13 @@ function RegistrationScreen(props) {
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
+
+  const handlePhone = (phone) => {
+    setUserData({ ...userData, phone });
+  };
+  const handleSubmit = () => {
+    console.log(userData);
+  };
   return (
     <View style={styles.background}>
       <Image source={require("../assets/logo.png")} />
@@ -40,9 +48,8 @@ function RegistrationScreen(props) {
             <TextInput
               // label={ focus ? "" : "Phone"}
               placeholder="Phone"
-              value={text}
-              onChangeText={(text) => setText(text)}
-              onChange={() => setFocus(true)}
+              value={userData.phone}
+              onChangeText={(phone) => handlePhone(phone)}
               style={{ width: 200, height: 40, fontSize: 10 }}
             />
           </View>
@@ -50,14 +57,15 @@ function RegistrationScreen(props) {
         <View style={styles.fields}>
           <TextInput
             placeholder="First name"
-            value={userData.firstName}
-            onChange={(text) => setUserData({ ...userData, firstName: text })}
+            value={userData.fname}
+            onChangeText={(fname) => setUserData({ ...userData, fname })}
             style={{ width: "100%", height: 40, fontSize: 10 }}
           />
         </View>
         <View style={styles.fields}>
           <TextInput
             placeholder="Last name"
+            onChangeText={(lname) => setUserData({ ...userData, lname })}
             style={{ width: "100%", height: 40, fontSize: 10 }}
           />
         </View>
@@ -65,13 +73,23 @@ function RegistrationScreen(props) {
           <TextInput
             placeholder="Email"
             value={userData.email}
-            onChange={(text) => setUserData({ ...userData, email: text })}
+            onChangeText={(email) => setUserData({ ...userData, email })}
             style={{ width: "100%", height: 40, fontSize: 10 }}
           />
         </View>
         <View style={styles.fields}>
           <TextInput
             placeholder="Password"
+            onChangeText={(password) => setUserData({ ...userData, password })}
+            style={{ width: "100%", height: 40, fontSize: 10 }}
+          />
+        </View>
+        <View style={styles.fields}>
+          <TextInput
+            placeholder="Confirm Password"
+            onChangeText={(password_confirmation) =>
+              setUserData({ ...userData, password_confirmation })
+            }
             style={{ width: "100%", height: 40, fontSize: 10 }}
           />
         </View>
@@ -96,29 +114,37 @@ function RegistrationScreen(props) {
                 <View>
                   <Text>Seller</Text>
                   <RadioButton
-                    value="first"
-                    status={checked === "first" ? "checked" : "unchecked"}
-                    onPress={() => setChecked("first")}
+                    value="seller"
+                    status={checked === "seller" ? "checked" : "unchecked"}
+                    onPress={() => {
+                      setChecked("seller");
+                      setUserData({ ...userData, role: "seller" });
+                      setVisible(false);
+                    }}
                   />
                 </View>
                 <View>
                   <Text>Guest</Text>
                   <RadioButton
-                    value="second"
-                    status={checked === "second" ? "checked" : "unchecked"}
-                    onPress={() => setChecked("second")}
+                    value="guest"
+                    status={checked === "guest" ? "checked" : "unchecked"}
+                    onPress={(value) => {
+                      setChecked("guest");
+                      setUserData({ ...userData, role: "guest" });
+                      setVisible(false);
+                    }}
                   />
                 </View>
               </Dialog.Content>
             </Dialog>
           </Portal>
         </View>
-        <View style={[styles.fields]}>
+        <View style={[styles.fields, styles.buttons]}>
           <Button
             mode="contained"
-            onPress={() => console.log("Pressed")}
+            onPress={handleSubmit}
             color="#FF0F00"
-            style={{ borderRadius: 50 }}
+            style={{ borderRadius: 50, width: "80%" }}
           >
             Create account
           </Button>
@@ -135,6 +161,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 89,
   },
+  buttons: {
+    alignItems: "center",
+  },
   fields: {
     width: "85%",
     marginTop: 17,
@@ -143,7 +172,7 @@ const styles = StyleSheet.create({
   },
   registerForm: {
     width: 352,
-    height: 480,
+    height: 530,
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -155,7 +184,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderRadius: 10,
     position: "absolute",
-    top: 200,
+    top: 150,
     left: 22,
   },
   title: {
