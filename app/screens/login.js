@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
     marginRight: "auto",
   },
   registerForm: {
-    width: 352,
-    height: 480,
+    width: "90%",
+    height: 280,
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderRadius: 10,
     position: "absolute",
-    top: 200,
-    left: 22,
+    top: 240,
+    //left: 5,
   },
   title: {
     fontSize: 18,
