@@ -7,6 +7,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 
 function HomePageSeller(props) {
   return (
@@ -16,18 +17,39 @@ function HomePageSeller(props) {
     // logout icon
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <View style={{ marginLeft: 20 }}>
+        <View style={{ flexDirection: "row" }}>
           <Image source={require("../assets/settings.png")} />
-        </View>
-        <View>
           <Text style={{ color: "#fff", marginLeft: 20 }}>Homepage</Text>
         </View>
         <View>
           <Image source={require("../assets/logout.png")} />
         </View>
       </View>
+      <View style={styles.searchCompo}>
+        <View>
+          <TextInput
+            placeholder="Search products"
+            // value={userData.fname}
+            // onChangeText={(fname) => setUserData({ ...userData, fname })}
+            // style={{ width: "100%", height: 40, fontSize: 10 }}
+          />
+        </View>
+        <View style={styles.searchIcon}>
+          <Image source={require("../assets/search.png")} />
+        </View>
+      </View>
+      <View style={styles.categories}>
+        <View>{/* title */}</View>
+        <View>
+          <View>
+            {/* icons */}
+            {/* texts */}
+          </View>
+        </View>
+      </View>
     </View>
     // search compo
+    // textfields
     // search icon
     // categories compo
     // title
@@ -55,7 +77,7 @@ const styles = StyleSheet.create({
   },
   topBar: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     backgroundColor: "#1B2646",
     padding: 15,
   },
