@@ -1,21 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
+import { Provider as PaperProvider } from 'react-native-paper';
+import SetupCompany from './app/screens/setupcompany';
+import Login from './app/screens/login';
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello World! Welcome to Africa XYZ</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider>
+      {/* <SetupCompany /> */}
+      <Login />
+      </PaperProvider>
+    // <View style={styles.container}>
+    //   <Text>Hello World! Welcome to Africa XYZ</Text>
+    //   <StatusBar style="auto" />
+    // </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
