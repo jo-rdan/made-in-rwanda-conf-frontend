@@ -12,10 +12,51 @@ import { TextInput, Button } from "react-native-paper";
 
 export default function DashBoard() {
   return (
-    <View style={styles.headcontainer}>
-      <Button icon="home" style={{ color: "#fff" }}>
+    <View>
+      <View style={styles.headcontainer}>
+        <View style={{ top: 25, left: "5%" }}>
+          <Image
+            source={require("../assets/iconhome.png")}
+            style={{ width: 20, height: 20 }}
+          />
+        </View>
         <Text style={styles.header}>DashBoard</Text>
-      </Button>
+        {/* <Button icon="home" style={{ color: "#fff" }}>
+        test
+      </Button> */}
+      </View>
+      <View style={styles.sideFields}>
+        <View style={{ alignSelf: "flex-start", top: 20, width: "90%" }}>
+          <TextInput
+            placeholder="Search products or brands"
+            style={{
+              width: "90%",
+              height: 40,
+              fontSize: 16,
+              backgroundColor: "#fff",
+            }}
+          />
+        </View>
+        <View style={styles.search}>
+          <Button onPress={() => alert("DashBoard")}>
+            <Image source={require("../assets/iconsearch.png")} />
+          </Button>
+        </View>
+      </View>
+      <View style={{ top: "10%", left: "5%" }}>
+        <Image
+          source={require("../assets/test.png")}
+          style={{ width: 200, height: 300 }}
+        />
+      </View>
+      <View style={{ alignSelf: "flex-end" }}>
+        <Button onPress={() => alert("DashBoard")}>
+          <Image
+            source={require("../assets/add.png")}
+            style={{ width: 50, height: 50 }}
+          />
+        </Button>
+      </View>
     </View>
   );
 }
@@ -31,9 +72,28 @@ const styles = StyleSheet.create({
   },
   header: {
     color: "#fff",
-    left: 10,
+    left: "15%",
     top: 0,
+    marginBottom: 20,
     //textTransform: "uppercase",
     fontSize: 26,
+  },
+  search: {
+    // borderTopWidth: 1,
+    // borderTopColor: "#E5E5E5",
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#E5E5E5",
+    // borderLeftWidth: 1,
+    // borderLeftColor: "#E5E5E5",
+    // borderRightWidth: 1,
+    // borderRightColor: "#E5E5E5",
+    // borderRadius: 5,
+    top: 20,
+    right: 3,
+    left: "5%",
+  },
+  sideFields: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
 });
