@@ -1,26 +1,32 @@
-import React from "react";
-import { Image, View, StyleSheet, Text } from "react-native";
+import * as React from "react";
+import { Image, View, ScrollView, StyleSheet, Text } from "react-native";
 
-import {
-  TextInput,
-  Button,
-} from "react-native-paper";
+import { TextInput, Button, Card, Title } from "react-native-paper";
 
-function Login(props) {
-  const [text, setText] = React.useState("");
-  const [userData, setUserData] = React.useState({
-    phoneNumber: "",
-    password: "",
-  });
-  const [focus, setFocus] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
+const Login = () => {
+  const [phone, setPhone] = React.useState();
+  const [password, setPassword] = React.useState();
+  loginFunc = async () => {
+    await fetch("http://192.168.1.186:8000/api/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone: phone, password: password }),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        //alert("Invalid credentials");
+        // if (res.status === 200) alert("Ok");
+        // if (res.status !== 200) alert("Not match");
+        console.log(res);
+      });
+    //alert(phone);
+  };
   return (
     <View style={styles.background}>
-      <Image source={require("../assets/logo.png")} />
+      <Image source={require("../assets/logo.png")} style={{ top: "16%" }} />
       <View style={styles.registerForm}>
         <Text style={styles.title}>Login</Text>
         <View style={styles.sideFields}>
@@ -30,45 +36,48 @@ function Login(props) {
           <View style={{ alignSelf: "flex-end" }}>
             <TextInput
               placeholder="Phone"
-              value={text}
-              onChangeText={(text) => setText(text)}
-              onChange={() => setFocus(true)}
-              style={{ width: 200, height: 40, fontSize: 10 }}
+              value={phone}
+              onChangeText={(phone) => setPhone(phone)}
+              style={{ width: 200, height: 40, fontSize: 16 }}
             />
           </View>
         </View>
         <View style={styles.fields}>
           <TextInput
             placeholder="Password"
-            style={{ width: "100%", height: 40, fontSize: 10 }}
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+            style={{ width: "100%", height: 40, fontSize: 16 }}
           />
         </View>
-        <View style={[styles.fields]}>
+        <View style={styles.fields}>
           <Button
             mode="contained"
-            onPress = {()=> alert("Login is working")}
+            onPress={loginFunc}
             color="#FF0F00"
             style={{ borderRadius: 50 }}
           >
             Login
           </Button>
           <Button
-            style={{borderRadius: 40}}
-            color= "#ff0f00"
-            onPress = {()=> alert("New Account")}
-            >Create an Account</Button>
+            style={{ borderRadius: 40 }}
+            color="#ff0f00"
+            onPress={() => alert("Login is working")}
+          >
+            Create an Account
+          </Button>
         </View>
       </View>
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   background: {
     backgroundColor: "#1B2646",
-    width: 411,
+    width: "100%",
     height: "100%",
     alignItems: "center",
-    paddingTop: 89,
+    paddingTop: "10%",
   },
   fields: {
     width: "85%",
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderRadius: 10,
     position: "absolute",
-    top: 240,
+    top: "40%",
     //left: 5,
   },
   title: {
@@ -119,6 +128,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
 });
-
 export default Login;
-

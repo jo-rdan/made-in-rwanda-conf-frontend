@@ -26,7 +26,7 @@ export default function DashBoard() {
       </Button> */}
       </View>
       <View style={styles.sideFields}>
-        <View style={{ alignSelf: "flex-start", top: 20, width: "90%" }}>
+        <View style={{ alignSelf: "flex-start", top: 20 }}>
           <TextInput
             placeholder="Search products or brands"
             style={{
@@ -45,7 +45,7 @@ export default function DashBoard() {
       </View>
       <View style={{ top: "10%", left: "5%" }}>
         <Image
-          source={require("../assets/test.png")}
+          source={require("../assets/ch.png")}
           style={{ width: 200, height: 300 }}
         />
       </View>
@@ -90,10 +90,12 @@ const styles = StyleSheet.create({
     // borderRadius: 5,
     top: 20,
     right: 3,
-    left: "5%",
+    backgroundColor: "#fff",
   },
   sideFields: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+    left: "5%",
+    backgroundColor: "#fff",
   },
 });
