@@ -8,12 +8,20 @@ import {
   StatusBar,
   ScrollView,
   Dimensions,
+  TouchableHighlight,
 } from "react-native";
-import { TextInput } from "react-native-paper";
+import { TextInput, Badge } from "react-native-paper";
 
 function HomePageSeller(props) {
   const [screenHeight, setScreenHeight] = React.useState(0);
   const { height } = Dimensions.get("window");
+  let [badgeCount, setBadgeCount] = React.useState(0);
+
+  // let badgeCount = 0;
+  const handleBadge = () => {
+    console.log("------", badgeCount);
+    setBadgeCount(badgeCount + 1);
+  };
   const onContentSizeChange = (contentWidth, contentHeight) => {
     const newContent = contentHeight + 100;
     // Save the content height in state
@@ -35,10 +43,16 @@ function HomePageSeller(props) {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-          <Image source={require("../assets/settings.png")} />
           <Text style={{ color: "#fff", marginLeft: 20 }}>Homepage</Text>
         </View>
-        <View>
+        <View style={styles.iconsNav}>
+          <Image
+            source={require("../assets/icons/cart.png")}
+            style={{ position: "absolute", left: 5 }}
+          />
+          <Badge size={13} visible={badgeCount > 0}>
+            {badgeCount}
+          </Badge>
           <Image source={require("../assets/logout.png")} />
         </View>
       </View>
@@ -132,7 +146,30 @@ function HomePageSeller(props) {
                 {/* details */}
                 <View>
                   {/* name */}
-                  <Text>Uzuri Sandals</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Uzuri Sandals
+                    </Text>
+                    <TouchableHighlight
+                      onPress={handleBadge}
+                      underlayColor="white"
+                    >
+                      <Image
+                        source={require("../assets/icons/add.png")}
+                        style={{ width: 19, height: 18, marginLeft: 40 }}
+                      />
+                    </TouchableHighlight>
+                  </View>
                   {/* price */}
                   <Text>15,000 Rwf</Text>
                 </View>
@@ -148,7 +185,14 @@ function HomePageSeller(props) {
                 {/* details */}
                 <View>
                   {/* name */}
-                  <Text>Hand Basket</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Hand Basket
+                  </Text>
                   {/* price */}
                   <Text>2,000 Rwf</Text>
                 </View>
@@ -156,12 +200,20 @@ function HomePageSeller(props) {
             </View>
           </View>
         </View>
-        <View style={styles.brands}>
+        <View style={styles.brandsCompo}>
           <View>
             {/* title */}
-            <Text>Top brands</Text>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "bold",
+                padding: 10,
+              }}
+            >
+              Top brands
+            </Text>
           </View>
-          <View>
+          <View style={styles.brands}>
             <View>
               {/* each brand  */}
               <View>
@@ -174,7 +226,14 @@ function HomePageSeller(props) {
                 {/* details */}
                 <View>
                   {/* name */}
-                  <Text>Moshions Sweater</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Moshions Sweater
+                  </Text>
                 </View>
               </View>
             </View>
@@ -190,7 +249,14 @@ function HomePageSeller(props) {
                 {/* details */}
                 <View>
                   {/* name */}
-                  <Text>Mara Phones Rwanda</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Mara Phones Rwanda
+                  </Text>
                 </View>
               </View>
             </View>
@@ -202,6 +268,15 @@ function HomePageSeller(props) {
 }
 
 const styles = StyleSheet.create({
+  brands: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingTop: 6,
+    paddingBottom: 6,
+  },
+  brandsCompo: {
+    paddingBottom: 10,
+  },
   categories: {
     width: "100%",
     flexDirection: "row",
@@ -217,19 +292,17 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   eachProduct: {
-    // backgroundColor: "#000",
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.22,
-    // shadowRadius: 2.22,
     elevation: 3,
+  },
+  iconsNav: {
+    width: "20%",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   products: {
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "baseline",
     paddingTop: 6,
     paddingBottom: 6,
   },
