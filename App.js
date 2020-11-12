@@ -7,6 +7,7 @@ import RegistrationScreen from "./app/screens/RegistrationScreen";
 import SetupCompany from "./app/screens/setupcompany";
 import Login from "./app/screens/login";
 import Checkout from "./app/screens/checkout";
+import ProductDetail from "./app/screens/product_details";
 import { Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -32,9 +33,14 @@ export default function App() {
             component={Login}
             options={{ headerShown: false }}
           /> */}
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Checkout"
             component={Checkout}
+            options={{ headerShown: false }}
+          /> */}
+          <Stack.Screen
+            name="ProductDetail"
+            component={ProductDetail}
             options={{ headerShown: false }}
           />
           <Stack.Screen
