@@ -13,16 +13,16 @@ const Login = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone: phone, password: password }),
+      body: JSON.stringify({ phone: `+250${phone}`, password: password }),
     })
       .then((response) => response.json())
       .then((res) => {
         //alert("Invalid credentials");
-        // if (res.status === 200) alert("Ok");
-        // if (res.status !== 200) alert("Not match");
-        console.log(res);
+        if (res.user.role === "seller") alert("Welcome Seller");
+        if (res.user.role === "guest") alert("Welcome Guest");
+        //if (res.status !== 201) alert("Not match");
+        console.log(res.user.role);
       });
-    //alert(phone);
   };
   return (
     <View style={styles.background}>
@@ -44,6 +44,7 @@ const Login = () => {
         </View>
         <View style={styles.fields}>
           <TextInput
+            secureTextEntry={true}
             placeholder="Password"
             value={password}
             onChangeText={(password) => setPassword(password)}
