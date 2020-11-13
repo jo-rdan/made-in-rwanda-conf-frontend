@@ -22,18 +22,21 @@ function HomePageSeller(props) {
 
   const getProductsData = async () => {
     const token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTg2OjgwMDBcL2FwaVwvbG9naW4iLCJpYXQiOjE2MDUyNzI3ODEsImV4cCI6MTYwNTI3NjM4MSwibmJmIjoxNjA1MjcyNzgxLCJqdGkiOiJBTmpzd0xtUDZBZHJ6R1hkIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.rcf7zvy0Q3T6zgiO6YedDZIAKhI4-10r0VKoYBMRY78";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9wYWNpZmljLWNpdGFkZWwtNjI4NDkuaGVyb2t1YXBwLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTYwNTI4MTU1OSwiZXhwIjoxNjA1Mjg1MTU5LCJuYmYiOjE2MDUyODE1NTksImp0aSI6Im1oY1FQaXRjaFMwczNyQUkiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.PVghHKIZ2KyJxQDci2p6mVpsb8PFELR6aGmNx6F0_H4";
 
-    const products = await axios.get("http://192.168.1.186:8000/api/products", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const products = await axios.get(
+      "https://pacific-citadel-62849.herokuapp.com/api/products",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     // setProducts(products);
     return products.data;
   };
   useEffect(() => {
     const fetchData = async () => {
       const allProducts = await getProductsData();
-      console.log("----->", allProducts[2]);
+      console.log("----->", allProducts);
       setProductsData(allProducts);
     };
     fetchData();
