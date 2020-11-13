@@ -28,11 +28,11 @@ export default function App() {
             component={RegistrationScreen}
             options={{ headerShown: false }}
           /> */}
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Login"
             component={Login}
             options={{ headerShown: false }}
-          />
+          /> */}
           {/* <Stack.Screen
             name="Checkout"
             component={Checkout}

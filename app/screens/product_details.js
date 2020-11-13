@@ -1,5 +1,6 @@
 import Axios from "axios";
-import React from "react";
+import * as SecureStore from "expo-secure-store";
+import React, { useEffect } from "react";
 import {
   Image,
   ScrollView,
@@ -11,16 +12,28 @@ import {
 } from "react-native";
 import { Button } from "react-native-paper";
 export default function ProductDetail() {
-  // getData = () => {
-  //   axios
-  //     .get("https://ui-avatars.com/api/?name=John+Doe")
-  //     .then(function (response) {
-  //       console.log(response);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
+  const getToken = async () => {
+    try {
+      const token = await SecureStore.getItemAsync("Authorization");
+      console.log("-------------", token);
+      const categories = await Axios.get(
+        "http://192.168.1.186:8000/api/categories",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("------", categories);
+    } catch (error) {
+      console.log("------------", error.response);
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>
