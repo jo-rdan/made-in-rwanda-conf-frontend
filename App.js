@@ -13,6 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Redirect from "./app/screens/Redirect";
 import DashBoard from "./app/screens/dashboard";
+import HomePageSeller from "./app/screens/HomePageSeller";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     backgroundColor: "#fff",
   },
 });
