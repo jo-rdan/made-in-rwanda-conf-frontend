@@ -1,3 +1,4 @@
+import Axios from "axios";
 import React from "react";
 import {
   Image,
@@ -10,6 +11,16 @@ import {
 } from "react-native";
 import { Button } from "react-native-paper";
 export default function ProductDetail() {
+  // getData = () => {
+  //   axios
+  //     .get("https://ui-avatars.com/api/?name=John+Doe")
+  //     .then(function (response) {
+  //       console.log(response);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>

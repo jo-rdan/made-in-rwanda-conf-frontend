@@ -1,28 +1,30 @@
 import * as React from "react";
 import { Image, View, ScrollView, StyleSheet, Text } from "react-native";
-
+import * as SecureStore from "expo-secure-store";
 import { TextInput, Button, Card, Title } from "react-native-paper";
 
 const Login = () => {
   const [phone, setPhone] = React.useState();
   const [password, setPassword] = React.useState();
   loginFunc = async () => {
-    await fetch("http://192.168.1.186:8000/api/login", {
+    const results = await fetch("http://192.168.1.186:8000/api/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone: `+250${phone}`, password: password }),
-    })
-      .then((response) => response.json())
-      .then((res) => {
-        //alert("Invalid credentials");
-        if (res.user.role === "seller") alert("Welcome Seller");
-        if (res.user.role === "guest") alert("Welcome Guest");
-        //if (res.status !== 201) alert("Not match");
-        console.log(res.user.role);
-      });
+      body: JSON.stringify({ phone: `250${phone}`, password: password }),
+    });
+    let data = await results.json();
+    console.log(
+      "results",
+      data,
+      "----",
+      await SecureStore.isAvailableAsync(),
+      "999999999",
+      await SecureStore.getItemAsync("Authorization")
+    );
+    await SecureStore.setItemAsync("Authorization", results.access_token);
   };
   return (
     <View style={styles.background}>
