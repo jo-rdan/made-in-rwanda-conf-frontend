@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   Text,
@@ -11,30 +11,39 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { TextInput, Badge } from "react-native-paper";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 function HomePageSeller(props) {
   const [screenHeight, setScreenHeight] = React.useState(0);
   const { height } = Dimensions.get("window");
   let [badgeCount, setBadgeCount] = React.useState(0);
+  const [productsData, setProductsData] = React.useState([]);
+
+  const getProductsData = async () => {
+    const token =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTg2OjgwMDBcL2FwaVwvbG9naW4iLCJpYXQiOjE2MDUyNzI3ODEsImV4cCI6MTYwNTI3NjM4MSwibmJmIjoxNjA1MjcyNzgxLCJqdGkiOiJBTmpzd0xtUDZBZHJ6R1hkIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.rcf7zvy0Q3T6zgiO6YedDZIAKhI4-10r0VKoYBMRY78";
+
+    const products = await axios.get("http://192.168.1.186:8000/api/products", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // setProducts(products);
+    return products.data;
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const allProducts = await getProductsData();
+      console.log("----->", allProducts[2]);
+      setProductsData(allProducts);
+    };
+    fetchData();
+  }, []);
 
   // let badgeCount = 0;
   const handleBadge = () => {
-    console.log("------", badgeCount);
     setBadgeCount(badgeCount + 1);
   };
-  const onContentSizeChange = (contentWidth, contentHeight) => {
-    const newContent = contentHeight + 100;
-    // Save the content height in state
-    setScreenHeight(newContent);
-    console.log(
-      "height",
-      height,
-      "content",
-      newContent,
-      "screen",
-      screenHeight
-    );
-  };
+
   return (
     // topbar
     //settings icon
@@ -136,68 +145,10 @@ function HomePageSeller(props) {
             </Text>
           </View>
           <View style={styles.products}>
-            <View style={styles.eachProduct}>
-              {/* single product  */}
-              <View>
-                {/* image */}
-                <Image source={require("../assets/products/product1.png")} />
-              </View>
-              <View>
-                {/* details */}
-                <View>
-                  {/* name */}
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Uzuri Sandals
-                    </Text>
-                    <TouchableHighlight
-                      onPress={handleBadge}
-                      underlayColor="white"
-                    >
-                      <Image
-                        source={require("../assets/icons/add.png")}
-                        style={{ width: 19, height: 18, marginLeft: 40 }}
-                      />
-                    </TouchableHighlight>
-                  </View>
-                  {/* price */}
-                  <Text>15,000 Rwf</Text>
-                </View>
-              </View>
-            </View>
-            <View>
-              {/* single product  */}
-              <View>
-                {/* image */}
-                <Image source={require("../assets/products/product2.png")} />
-              </View>
-              <View>
-                {/* details */}
-                <View>
-                  {/* name */}
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Hand Basket
-                  </Text>
-                  {/* price */}
-                  <Text>2,000 Rwf</Text>
-                </View>
-              </View>
-            </View>
+            {productsData &&
+              productsData.map((product) => {
+                console.log("donneeeeee", product);
+              })}
           </View>
         </View>
         <View style={styles.brandsCompo}>
