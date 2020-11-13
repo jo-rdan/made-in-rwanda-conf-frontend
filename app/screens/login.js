@@ -16,15 +16,28 @@ const Login = () => {
       body: JSON.stringify({ phone: `250${phone}`, password: password }),
     });
     let data = await results.json();
+    console.log(data.access_token);
+    await SecureStore.setItemAsync("Authorization", data.access_token);
+    let tok = await SecureStore.getItemAsync("Authorization");
     console.log(
       "results",
       data,
       "----",
       await SecureStore.isAvailableAsync(),
       "999999999",
-      await SecureStore.getItemAsync("Authorization")
+      tok
     );
-    await SecureStore.setItemAsync("Authorization", results.access_token);
+    // let data = await results.json();
+    // await SecureStore.setItemAsync("Authorization", results.access_token);
+    // console.log(
+    //   "results",
+    //   data,
+    //   "----",
+    //   await SecureStore.isAvailableAsync(),
+    //   "999999999",
+    //   await SecureStore.getItemAsync("Authorization")
+    // );
+    //await SecureStore.setItemAsync("Authorization", results.access_token);
   };
   return (
     <View style={styles.background}>

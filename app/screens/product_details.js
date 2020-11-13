@@ -13,21 +13,22 @@ import {
 import { Button } from "react-native-paper";
 export default function ProductDetail() {
   const getToken = async () => {
-    try {
-      const token = await SecureStore.getItemAsync("Authorization");
-      console.log("-------------", token);
-      const categories = await Axios.get(
-        "http://192.168.1.186:8000/api/categories",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("------", categories);
-    } catch (error) {
-      console.log("------------", error.response);
-    }
+    const token = await SecureStore.getItemAsync("Authorization");
+    //console.log("-------------", token);
+    const product = await Axios.get(
+      "http://192.168.1.186:8000/api/products/1",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(product.data);
+    // try {
+
+    // } catch (error) {
+    //   console.log("------------", error.response);
+    // }
   };
 
   useEffect(() => {
