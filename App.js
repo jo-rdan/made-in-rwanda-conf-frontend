@@ -12,6 +12,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Redirect from "./app/screens/Redirect";
+import DashBoard from "./app/screens/dashboard";
 
 const Stack = createStackNavigator();
 
@@ -28,11 +29,16 @@ export default function App() {
             component={RegistrationScreen}
             options={{ headerShown: false }}
           /> */}
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Login"
             component={Login}
             options={{ headerShown: false }}
-          /> */}
+          />
+          <Stack.Screen
+            name="Dashboard"
+            component={DashBoard}
+            options={{ headerShown: false }}
+          />
           {/* <Stack.Screen
             name="Checkout"
             component={Checkout}

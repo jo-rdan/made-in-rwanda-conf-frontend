@@ -45,7 +45,7 @@ function RegistrationScreen({ navigation }) {
         role,
       } = userData;
       const results = await axios.post(
-        "http://192.168.1.186:8000/api/register",
+        "https://pacific-citadel-62849.herokuapp.com/api/register",
         {
           fname,
           lname,
