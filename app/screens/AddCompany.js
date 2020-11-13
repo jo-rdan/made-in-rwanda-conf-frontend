@@ -1,4 +1,4 @@
-import React,{useEffect,useState}from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   StyleSheet,
@@ -11,9 +11,56 @@ import {
 } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
+function AddCompany() {
 
-export default function AddCompany() {
+  const [userData, setUserData] = React.useState({
+    CName: "",
+    CAddress: "",
+    CDescription: "",
+    CLogo: "",
+  });
+
+  const [errorMessage, setErrorMessage] = React.useState({
+    message: "",
+    show: false,
+  });
+
+  const handleSubmit = async () => {
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTg2OjgwMDBcL2FwaVwvbG9naW4iLCJpYXQiOjE2MDUyNTg1MTcsImV4cCI6MTYwNTI2MjExNywibmJmIjoxNjA1MjU4NTE3LCJqdGkiOiJYQ2I0WTdYMWVvQlFxajVOIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.A2UaX2heYClo2yB0Y52Gw2Hhs8C5UZBTF8gyhgJMdu4'
+    try {
+      const {
+        CName,
+    CAddress,
+    CDescription,
+    CLogo
+      } = userData;
+      const results = await axios.post(
+        "http://192.168.1.186:8000/api/companies",
+        {
+          name: CName,
+          address: CAddress,
+          description: CDescription,
+          image: CLogo,
+        },
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        }
+        );
+        console.log('data', results);
+        if (results.status === 201) return navigation.navigate("Company");
+      } catch (error) {
+      // setErrorMessage({ message: error.response.data.error, show: true });
+      // setTimeout(() => {
+      //   setErrorMessage({ ...errorMessage, show: false });
+      // }, 3000);
+    }
+  };
+
+  //Image upload
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -57,52 +104,58 @@ export default function AddCompany() {
           }}
        
         /> */}
-        {image && <Image source={{ uri: image }} style={{ width:140, height: 120, alignItems:'center',marginHorizontal:'31%', marginVertical:'4%'}} />}
-      <TouchableOpacity onPress={pickImage} style={styles.button}>
-        <Text style={styles.buttonText}>Add Product</Text>
-      </TouchableOpacity>
+        {image && <Image source={{ uri: image }} 
+        style={{ width: 140, height: 120, alignItems: 'center', marginHorizontal: '31%', marginVertical: '4%' }} />}
+        <TouchableOpacity onPress={pickImage} style={styles.button}>
+          <Text style={styles.buttonText}>Add Product</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.fields}>
-    
+
         <TextInput
-        
+
           placeholder="Company Name"
-          placeholderTextColor = "#63707e"
-         
-          value={userData.productName}
-          onChange={(text) => setUserData({ ...userData, productName: text })}
-          style={{ fontSize: 14,height:47,backgroundColor:'white',}}
+          placeholderTextColor="#63707e"
+          value={userData.CName}
+          onChangeText={(CName) => setUserData({ ...userData, CName })}
+          style={{ fontSize: 14, height: 47, backgroundColor: 'white', }}
         />
-      </View> 
-       <View style={styles.field}>
+      </View>
+      <View style={styles.field}>
         <TextInput
           placeholder="Company Address"
-          placeholderTextColor = "#63707e"
-          fontcolor="red"
-          value={userData.productPrice}
-          onChange={(text) => setUserData({ ...userData, productPrice: text })}
-          style={{ fontSize: 14,height:47,backgroundColor:'white',color:'black'}}
+          placeholderTextColor="#63707e"
+          value={userData.CAddress}
+          onChangeText={(CAddress) => setUserData({ ...userData, CAddress })}
+          style={{ fontSize: 14, height: 47, backgroundColor: 'white', color: 'black' }}
         />
       </View>
       <View style={styles.field}>
         <TextInput
           placeholder="Company Description"
-          placeholderTextColor = "#63707e"
-          value={userData.productPrice}
-          onChange={(text) => setUserData({ ...userData, productPrice: text })}
-          style={{ fontSize: 14,height:47,backgroundColor:'white',color:'black'}}
+          placeholderTextColor="#63707e"
+          value={userData.CDescription}
+          onChangeText={(CDescription) => setUserData({ ...userData, CDescription })}
+          style={{ fontSize: 14, height: 47, backgroundColor: 'white', color: 'black' }}
         />
       </View>
       <View style={styles.btn}>
-          <Button
-            mode = "contained"
-            style={{borderRadius: 55}}
-            color="#FF0F00"
-       
-            onPress = {()=> alert("Okay Ready to go")}
-          >Set up Your Company</Button></View>
-    </ScrollView> 
+        <Button
+          mode="contained"
+          style={{ borderRadius: 55 }}
+          color="#FF0F00"
+          onPress={handleSubmit}
+          // onPress = {()=> alert("Okay Ready to go")}
+          disabled={
+              userData.CName &&
+              userData.CAddress &&
+              userData.CDescription              ? false
+              :true
+          }
+        >Set up Your Company</Button>
+      </View>
+    </ScrollView>
 
 
 
@@ -111,7 +164,7 @@ export default function AddCompany() {
 }
 const styles = StyleSheet.create({
   container: {
-    
+
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     width: '100%',
     height: 65,
@@ -123,11 +176,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     paddingRight: 48,
     backgroundColor: '#1B2646',
-    marginTop:-4,
-    height:'80%',
+    marginTop: -4,
+    height: '80%',
     textTransform: 'uppercase',
-paddingTop:10,
-paddingRight:12,
+    paddingTop: 10,
+    paddingRight: 12,
     fontSize: 20,
     textTransform: "capitalize",
     textAlign: "center",
@@ -136,8 +189,8 @@ paddingRight:12,
     backgroundColor: '#fff',
     padding: 20,
     borderRadius: 5,
-    marginLeft: '33%',
-    marginTop: 1,
+    marginLeft: '5%',
+    marginTop: "10%",
   },
   buttonText: {
     fontSize: 18,
@@ -152,11 +205,11 @@ paddingRight:12,
   // },
   fields: {
     width: "85%",
-    marginTop:10,
+    marginTop: 10,
     marginLeft: 30,
     marginRight: "auto",
 
-   },
+  },
   field: {
     width: "85%",
     marginTop: 10,
@@ -181,8 +234,8 @@ paddingRight:12,
   // },
   btn: {
     fontSize: 21,
-    marginTop:75,
-  
+    marginTop: 75,
+
     textTransform: "capitalize",
     marginRight: '20%',
     marginLeft: '20%',
@@ -190,3 +243,4 @@ paddingRight:12,
     height: '90%',
   },
 });
+export default AddCompany;
