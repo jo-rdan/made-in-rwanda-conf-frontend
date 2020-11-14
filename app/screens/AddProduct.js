@@ -1,29 +1,44 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  TouchableOpacity,
   StatusBar,
   ScrollView,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker'
-import { TextInput, Button } from 'react-native-paper';
+  TouchableOpacity,
+ } from "react-native";
+import {
+  TextInput,
+  Button,
+  Dialog,
+  Portal,
+  RadioButton,
+} from "react-native-paper";
+import * as ImagePicker from 'expo-image-picker';
+import { Provider as PaperProvider } from "react-native-paper";
+import axios from "axios";
 
 function AddProduct() {
-  const [sellerData, setsellerData] = React.useState({
+
+  const [userproduct, setUserProduct] = React.useState({
     PName: "",
     PPrice: "",
+
     PPhoto: "",
     categories: "",
   });
+  const [visible, setVisible] = React.useState(false);
+  const [checked, setChecked] = React.useState("6+ ");
 
   const [errorMessage, setErrorMessage] = React.useState({
     message: "",
     show: false,
   });
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
+
+
 
   const handleSubmit = async () => {
     const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTg2OjgwMDBcL2FwaVwvbG9naW4iLCJpYXQiOjE2MDUyNTg1MTcsImV4cCI6MTYwNTI2MjExNywibmJmIjoxNjA1MjU4NTE3LCJqdGkiOiJYQ2I0WTdYMWVvQlFxajVOIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.A2UaX2heYClo2yB0Y52Gw2Hhs8C5UZBTF8gyhgJMdu4'
@@ -33,8 +48,8 @@ function AddProduct() {
         PPrice,
         PPhoto,
         categories,
-      } = userData;
-      const results = await axios.get(
+      } = userproduct;
+      const results = await axios.post(
         "http://192.168.1.186:8000/api/companies",
         {
           name: PName,
@@ -49,7 +64,8 @@ function AddProduct() {
         }
       );
       console.log('data', results);
-      if (results.status === 201) return navigation.navigate("Company");
+
+      if (results.status === 201) return navigation.navigate("Product");
     } catch (error) {
       setErrorMessage({ message: error.response.data.error, show: true });
       setTimeout(() => {
@@ -58,9 +74,7 @@ function AddProduct() {
     }
   };
 
-  
-
-  // image upload
+  //Image upload
   const [image, setImage] = React.useState(null);
 
   useEffect(() => {
@@ -89,42 +103,33 @@ function AddProduct() {
     }
   };
 
-
-
-
   return (
-
-    <ScrollView >
+<PaperProvider>
       <View style={styles.container}>
-        <Text style={styles.header}>HomePage</Text>
+        <Text style={styles.header}>Add Product</Text>
       </View>
       <View>
 
-
-
-        {image && <Image source={{ uri: image }} style={{ width: 140, height: 120, alignItems: 'center', marginHorizontal: '31%', marginVertical: '4%' }}
-          value={sellerData.PPhoto}
-        //
-        />}
+        {image && <Image source={{ uri: image }}
+          style={{ width: 140, height: 120, alignItems: 'center', marginHorizontal: '31%', marginVertical: '4%' }} />}
         <TouchableOpacity onPress={pickImage} style={styles.button}>
           <Text style={styles.buttonText}>Add Product</Text>
         </TouchableOpacity>
       </View>
-
 
       <View style={styles.fields}>
 
         <TextInput
           placeholder="Product Name"
           placeholderTextColor="#63707e"
-
-          value={sellerData.PName}
-          onChangeText={(PName) => setsellerData({ ...sellerData, PName })}
-          style={{ fontSize: 14, height: 47, backgroundColor: 'white' }}
+          value={userproduct.PName}
+          onChangeText={(PName) => setUserProduct({ ...userproduct, PName })}
+          style={{ fontSize: 14, height: 47, backgroundColor: 'white', }}
         />
       </View>
 
-      {/* category */}
+      {/* categories */}
+
       <View style={styles.fields}>
         <Text
           style={{
@@ -137,45 +142,44 @@ function AddProduct() {
           }}
           onPress={showDialog}
         >
-          Category{sellerData.categories ? sellerData.categories : "..."}
+          I am in {userproduct.categories ? userproduct.categories : "..."}{" "}Industry
         </Text>
-        {/* <Portal>
+        <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Choose a category</Dialog.Title>
+            <Dialog.Title>Company category</Dialog.Title>
             <Dialog.Content>
-              <View> */}
-                {/* pop ups*/}
-                {/* <Text>Tech</Text>
+              <View>
+                <Text>Tech</Text>
                 <RadioButton
                   value="Tech"
                   status={checked === "Tech" ? "checked" : "unchecked"}
                   onPress={() => {
                     setChecked("Tech");
-                    setsellerData({ ...sellerData, categories: "Tech" });
+                    setUserProduct({ ...userproduct, categories: "Tech" });
                     hideDialog();
                   }}
                 />
               </View>
               <View>
-                <Text>Cosmetics</Text>
+                <Text>Beauty</Text>
                 <RadioButton
-                  value="Cosmetics"
-                  status={checked === "Cosmetics" ? "checked" : "unchecked"}
+                  value="Beauty"
+                  status={checked === "Beauty" ? "checked" : "unchecked"}
                   onPress={(value) => {
-                    setChecked("Cosmetics");
-                    setsellerData({ ...sellerData, categories: "Cosmetics" });
+                    setChecked("Beauty");
+                    setUserProduct({ ...userproduct, categories: "Beauty" });
                     hideDialog();
                   }}
                 />
-              </View> */}
-              {/* <View>
+              </View>
+              <View>
                 <Text>Clothing</Text>
                 <RadioButton
                   value="Clothing"
                   status={checked === "Clothing" ? "checked" : "unchecked"}
                   onPress={(value) => {
                     setChecked("Clothing");
-                    setsellerData({ ...sellerData, categories: "Clothing" });
+                    setUserProduct({ ...userproduct, categories: "Clothing" });
                     hideDialog();
                   }}
                 />
@@ -187,69 +191,63 @@ function AddProduct() {
                   status={checked === "Art" ? "checked" : "unchecked"}
                   onPress={(value) => {
                     setChecked("Art");
-                    setsellerData({ ...sellerData, categories: "Art" });
+                    setUserProduct({ ...userproduct, categories: "Art" });
                     hideDialog();
                   }}
                 />
-              </View> */}
-              {/* <View>
-                <Text>Drinks</Text>
-                <RadioButton
-                  value="Drinks"
-                  status={checked === "Drinks" ? "checked" : "unchecked"}
-                  onPress={(value) => {
-                    setChecked("Drinks");
-                    setsellerData({ ...sellerData, categories: "Drinks" });
-                    hideDialog();
-                  }}
-                />
-              </View> */}
-              {/* <View>
+              </View>
+              <View>
                 <Text>Food</Text>
                 <RadioButton
                   value="Food"
                   status={checked === "Food" ? "checked" : "unchecked"}
                   onPress={(value) => {
                     setChecked("Food");
-                    setsellerData({ ...sellerData, categories: "Food" });
+                    setUserProduct({ ...userproduct, categories: "Food" });
                     hideDialog();
                   }}
                 />
-              </View> */}
-
-{/* 
+              </View>
+              
             </Dialog.Content>
           </Dialog>
-        </Portal> */}
+        </Portal>
+
       </View>
+
+
+
 
       <View style={styles.field}>
         <TextInput
           placeholder="Price"
           placeholderTextColor="#63707e"
-          value={sellerData.PPrice}
-          onChangeText={(PPrice) => setsellerData({ ...sellerData, PPrice })}
+          value={userproduct.PPrice}
+          onChangeText={(PPrice) => setUserProduct({ ...userproduct, PPrice })}
           style={{ fontSize: 14, height: 47, backgroundColor: 'white', color: 'black' }}
         />
       </View>
+
       <View style={styles.btn}>
         <Button
           mode="contained"
-
-          style={{ borderRadius: 40, height: '20%', paddingTop: 5, paddingBottom: 10, width: '88%', }}
+          style={{ borderRadius: 55 }}
           color="#FF0F00"
-          // onPress={() => alert("Okay Ready to go")}
           onPress={handleSubmit}
+          // onPress={() => alert("Okay Ready to go")}
+
           disabled={
-            sellerData.PName &&
-              sellerData.categories &&
-              sellerData.PPrice &&
-              sellerData.PPhoto
+            userproduct.PName &&
+            userproduct.categories&&
+              userproduct.PPrice
+
               ? false
               : true
           }
-        >Upload</Button></View>
-    </ScrollView>
+        >Upload</Button>
+      </View>
+      </PaperProvider>
+
 
 
   );
@@ -260,53 +258,17 @@ const styles = StyleSheet.create({
 
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     width: '100%',
-    height: 52,
+    height: 65,
     left: 0,
     top: -3.6,
     justifyContent: 'center',
-  },
-
-  button: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 5,
-    // marginLeft: '33%',
-    marginTop: 30,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#1B2646',
-  },
-  // addproduct: {
-  //   marginLeft: '39%',
-  //   fontSize: 18,
-  //   marginTop: 20,
-  // },
-  fields: {
-    width: "85%",
-    marginTop: 20,
-    marginLeft: 30,
-    marginRight: "auto",
-
-  },
-  field: {
-    width: "85%",
-    marginTop: 20,
-    marginLeft: 30,
-    marginRight: "auto",
-  },
-  screenContainer: {
-    flex: 1,
-    justifyContent: "center",
-
-    marginTop: 0,
   },
   header: {
     color: '#fff',
     paddingRight: 48,
     backgroundColor: '#1B2646',
     marginTop: -4,
-    height: '100%',
+    height: '80%',
     textTransform: 'uppercase',
     paddingTop: 10,
     paddingRight: 12,
@@ -314,14 +276,67 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     textAlign: "center",
   },
+  button: {
+    backgroundColor: '#f4f3f3',
+    padding: 20,
+    borderRadius: 5,
+    marginLeft: '8%',
+    marginRight: '5%',
+    marginTop: "10%",
+    width: "85%",
+
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#1B2646',
+    padding: 10,
+    paddingStart: 80,
+  },
+
+
+  // addproduct: {
+  //   marginLeft:'34%',
+  //   fontSize:18,
+  //   marginTop: 10,
+  // },
+  fields: {
+    width: "85%",
+    marginTop: 10,
+    marginLeft: 30,
+    marginRight: "auto",
+
+  },
+  field: {
+    width: "85%",
+    marginTop: 10,
+    marginLeft: 30,
+    marginRight: "auto",
+  },
+
+  // header: {
+  //   color: 'black',
+  //   position: 'relative',
+
+  //   // backgroundColor: '#1B2646',
+  //   marginTop: -90,
+  //   textTransform: 'uppercase',
+  //   paddingTop: 55,
+  //   paddingBottom: 5,
+  //   height: '100%',
+
+  //   fontSize: 20,
+  //   textTransform: "capitalize",
+  //   textAlign: "center",
+  // },
   btn: {
     fontSize: 21,
-    marginTop: 70,
+    marginTop: 75,
+
     textTransform: "capitalize",
     marginRight: '20%',
     marginLeft: '20%',
-    width: '70%',
-    height: '45%',
+    width: '65%',
+    height: '90%',
   },
 });
-export default AddProduct()
+export default AddProduct;
