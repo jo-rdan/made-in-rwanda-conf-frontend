@@ -66,7 +66,9 @@ export default function Checkout(props) {
         </TouchableNativeFeedback>
       </View>
       <View style={styles.body}>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Total :{total}</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+          Total :{total} Rwf
+        </Text>
       </View>
     </ScrollView>
   );

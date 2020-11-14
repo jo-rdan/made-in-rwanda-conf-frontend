@@ -21,6 +21,7 @@ function HomePageSeller({ navigation }) {
   let [badgeCount, setBadgeCount] = React.useState(0);
   const [productsData, setProductsData] = React.useState([]);
   const [selectedProduct, setSelectedProduct] = React.useState([]);
+  const [product, setProduct] = React.useState();
 
   const getProductsData = async () => {
     let token = await SecureStore.getItemAsync("Authorization");
@@ -42,8 +43,25 @@ function HomePageSeller({ navigation }) {
   // let badgeCount = 0;
   const handleBadge = async (product) => {
     // console.log("==========>>", product);
-    setBadgeCount(badgeCount + 1);
-    setSelectedProduct([...selectedProduct, product]);
+    // setBadgeCount(badgeCount + 1);
+    // setSelectedProduct([...selectedProduct, product]);
+    const token = await SecureStore.getItemAsync("Authorization");
+    console.log("adddd", product.id, token);
+    // const addToCart = await axios.post(
+    //   `http://192.168.1.186:8000/api/products/${product}/addtocart`,
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    const addToCart = await axios.post(
+      `http://192.168.1.186:8000/api/products/${product.id}/addtocart`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    console.log("adddd", addToCart);
+  };
+  const handleAddToCart = async () => {
+    navigation.navigate("Cart");
   };
 
   return (

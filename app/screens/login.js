@@ -7,17 +7,14 @@ const Login = ({ navigation }) => {
   const [phone, setPhone] = React.useState();
   const [password, setPassword] = React.useState();
   loginFunc = async () => {
-    const results = await fetch(
-      "https://pacific-citadel-62849.herokuapp.com/api/login",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ phone: `250${phone}`, password: password }),
-      }
-    );
+    const results = await fetch("http://192.168.1.186:8000/api/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone: `250${phone}`, password: password }),
+    });
     let data = await results.json();
     console.log(data.access_token);
     await SecureStore.setItemAsync("Authorization", data.access_token);

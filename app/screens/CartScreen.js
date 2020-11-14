@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, Image, StatusBar, Platform } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { StyleSheet } from "react-native";
-
+import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 function CartScreen(props) {
@@ -14,9 +14,22 @@ function CartScreen(props) {
   const [products, setProducts] = React.useState(null);
   let total = 0;
   useEffect(() => {
-    console.log("pppp", props);
-    console.log(props.route.params.product);
-    setProducts(props.route.params.product);
+    // console.log("pppp", props);
+    // console.log(props.route.params.product);
+    // setProducts(props.route.params.product);
+    const fetchData = async () => {
+      let token = await SecureStore.getItemAsync("Authorization");
+      const productsToCart = await axios.get(
+        "http://192.168.1.186:8000/api/mycart",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setProducts(productsToCart.data.products);
+      // const allProducts = await getProductsData();
+      // setProductsData(allProducts);
+    };
+    fetchData();
   }, []);
 
   const handleTotal = (product) => {
@@ -25,6 +38,26 @@ function CartScreen(props) {
     console.log("00000", total);
   };
 
+  const handleCheckout = async () => {
+    // const checkout = await
+    try {
+      let token = await SecureStore.getItemAsync("Authorization");
+      const checkout = await axios.post(
+        `http://192.168.1.186:8000/api/checkout`,
+        {
+          "id[]": 2,
+          "numberOfItems[]": 1,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("porrrrr", checkout);
+      // props.navigation.navigate("Checkout", { total })
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   return (
     <View style={styles.container}>
       {/* top bar */}
@@ -90,7 +123,7 @@ function CartScreen(props) {
             mode="contained"
             color="#FF0F00"
             style={styles.checkout}
-            onPress={() => props.navigation.navigate("Checkout", { total })}
+            onPress={handleCheckout}
           >
             Checkout
           </Button>
