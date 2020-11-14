@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   ScrollView,
@@ -9,14 +9,18 @@ import {
   StatusBar,
 } from "react-native";
 import { State, TouchableNativeFeedback } from "react-native-gesture-handler";
-export default function Checkout() {
+export default function Checkout(props) {
   const [total, setTotal] = React.useState();
   state = {
     total: 45000,
   };
   const momoPay = () => {
-    alert("Payment is working");
+    alert("Thank you");
   };
+  useEffect(() => {
+    console.log("pppp", props);
+    setTotal(props.route.params.total);
+  }, []);
 
   return (
     <ScrollView>
@@ -62,9 +66,7 @@ export default function Checkout() {
         </TouchableNativeFeedback>
       </View>
       <View style={styles.body}>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-          Total :{this.state.total}
-        </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Total :{total}</Text>
       </View>
     </ScrollView>
   );

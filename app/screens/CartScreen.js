@@ -3,11 +3,27 @@ import { View, Text, Image, StatusBar, Platform } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { StyleSheet } from "react-native";
 
+import * as SecureStore from "expo-secure-store";
+
 function CartScreen(props) {
   const [quantity, setQuantity] = React.useState(1);
   const [unitTotal, setUnitTotal] = React.useState(15000);
+  const [grandTotal, setGrandTotal] = React.useState(null);
   const [productPrice, setProductPrice] = React.useState(15000);
   const [animate, setAnimate] = React.useState(false);
+  const [products, setProducts] = React.useState(null);
+  let total = 0;
+  useEffect(() => {
+    console.log("pppp", props);
+    console.log(props.route.params.product);
+    setProducts(props.route.params.product);
+  }, []);
+
+  const handleTotal = (product) => {
+    total += product.price;
+    setGrandTotal(total);
+    console.log("00000", total);
+  };
 
   return (
     <View style={styles.container}>
@@ -27,26 +43,35 @@ function CartScreen(props) {
           {/* products header details here (product(s), unit price, quantity, total) */}
           <Text style={styles.headerText}>Product(s)</Text>
           <Text style={styles.headerText}>Unit price</Text>
-          <Text style={styles.headerText}>Quantity</Text>
-          <Text style={styles.headerText}>Total</Text>
+          {/* <Text style={styles.headerText}>Quantity</Text>
+          <Text style={styles.headerText}>Total</Text> */}
         </View>
         {/* body */}
-        <View style={styles.productsBody}>
-          {/* products on cart body */}
-          <Text>Uzuri Sandals</Text>
+        {/* products on cart body */}
+        {/* <Text>Uzuri Sandals</Text>
           <Text>15,000 Rwf</Text>
-          <TextInput
-            placeholder="Quantity"
-            value={quantity}
-            onChangeText={async (qty) => {
-              setQuantity(parseInt(qty));
-              setUnitTotal(quantity * productPrice);
-              setReRender(true);
-            }}
-            style={{ width: "10%", height: 23, fontSize: 10, left: 10 }}
-          />
-          <Text style={{ left: 10 }}>{unitTotal} Rwf</Text>
-        </View>
+        <Text style={{ left: 10 }}>{unitTotal} Rwf</Text> */}
+        {products &&
+          products.map((product) => {
+            total += product.price;
+            return (
+              <View style={styles.productsBody}>
+                {() => handleTotal(product)}
+                <Text>{product.name}</Text>
+                <Text>{product.price}</Text>
+                {/* <TextInput
+                  placeholder="Quantity"
+                  value={quantity}
+                  onChangeText={async (qty) => {
+                    setQuantity(parseInt(qty));
+                    setUnitTotal(quantity * product.price);
+                  }}
+                  style={{ width: "10%", height: 23, fontSize: 10, left: 10 }}
+                /> */}
+                {/* <Text style={{ left: 10 }}>{unitTotal} Rwf</Text> */}
+              </View>
+            );
+          })}
       </View>
       <Text
         style={{
@@ -56,18 +81,28 @@ function CartScreen(props) {
           paddingLeft: 10,
         }}
       >
-        Total: 45,000 Rwf
+        Total: {total} Rwf
       </Text>
       <View style={styles.actions}>
         <View style={{ width: "80%" }}>
           {/* Checkout button */}
-          <Button mode="contained" color="#FF0F00" style={styles.checkout}>
+          <Button
+            mode="contained"
+            color="#FF0F00"
+            style={styles.checkout}
+            onPress={() => props.navigation.navigate("Checkout", { total })}
+          >
             Checkout
           </Button>
         </View>
         <View>
           {/* Keep buying */}
-          <Text style={{ fontSize: 14, color: "#ff0f00" }}>Keep shopping</Text>
+          <Text
+            style={{ fontSize: 14, color: "#ff0f00" }}
+            onPress={() => props.navigation.navigate("Home")}
+          >
+            Keep shopping
+          </Text>
         </View>
       </View>
     </View>

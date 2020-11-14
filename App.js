@@ -32,15 +32,15 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="Register"
+            component={RegistrationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="Cart"
             component={CartScreen}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
-            name="Register"
-            component={RegistrationScreen}
-            options={{ headerShown: false }}
-          /> */}
           <Stack.Screen
             name="Home"
             component={HomePageSeller}
@@ -51,11 +51,11 @@ export default function App() {
             component={DashBoard}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Checkout"
             component={Checkout}
             options={{ headerShown: false }}
-          /> */}
+          />
           <Stack.Screen
             name="ProductDetail"
             component={ProductDetail}

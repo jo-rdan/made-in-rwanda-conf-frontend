@@ -9,16 +9,18 @@ import {
   ScrollView,
   Dimensions,
   TouchableHighlight,
+  TouchableNativeFeedback,
 } from "react-native";
 import { TextInput, Badge } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
-function HomePageSeller(props) {
+function HomePageSeller({ navigation }) {
   const [screenHeight, setScreenHeight] = React.useState(0);
   const { height } = Dimensions.get("window");
   let [badgeCount, setBadgeCount] = React.useState(0);
   const [productsData, setProductsData] = React.useState([]);
+  const [selectedProduct, setSelectedProduct] = React.useState([]);
 
   const getProductsData = async () => {
     let token = await SecureStore.getItemAsync("Authorization");
@@ -32,15 +34,16 @@ function HomePageSeller(props) {
   useEffect(() => {
     const fetchData = async () => {
       const allProducts = await getProductsData();
-      console.log("----->", allProducts);
       setProductsData(allProducts);
     };
     fetchData();
   }, []);
 
   // let badgeCount = 0;
-  const handleBadge = () => {
+  const handleBadge = async (product) => {
+    // console.log("==========>>", product);
     setBadgeCount(badgeCount + 1);
+    setSelectedProduct([...selectedProduct, product]);
   };
 
   return (
@@ -54,10 +57,17 @@ function HomePageSeller(props) {
           <Text style={{ color: "#fff", marginLeft: 20 }}>Homepage</Text>
         </View>
         <View style={styles.iconsNav}>
-          <Image
-            source={require("../assets/icons/cart.png")}
-            style={{ position: "absolute", left: 5 }}
-          />
+          <TouchableNativeFeedback
+            onPress={() =>
+              navigation.navigate("Cart", { product: selectedProduct })
+            }
+            underlayColor="#000"
+          >
+            <Image
+              source={require("../assets/icons/cart.png")}
+              style={{ position: "absolute", left: 5 }}
+            />
+          </TouchableNativeFeedback>
           <Badge size={13} visible={badgeCount > 0}>
             {badgeCount}
           </Badge>
@@ -146,7 +156,6 @@ function HomePageSeller(props) {
           <View style={styles.products}>
             {productsData &&
               productsData.map((product) => {
-                console.log("donneeeeee", product);
                 return (
                   <View style={styles.eachProduct} key={product.id}>
                     {/* single product  */}
@@ -175,7 +184,7 @@ function HomePageSeller(props) {
                             {product.name}
                           </Text>
                           <TouchableHighlight
-                            onPress={handleBadge}
+                            onPress={() => handleBadge(product)}
                             underlayColor="white"
                           >
                             <Image
