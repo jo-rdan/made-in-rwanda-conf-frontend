@@ -7,6 +7,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Redirect from "./app/screens/Redirect";
+import CartScreen from "./app/screens/CartScreen";
 import HomePageSeller from "./app/screens/HomePageSeller";
 
 const Stack = createStackNavigator();
@@ -20,10 +21,15 @@ export default function App() {
             <RegistrationScreen />
           </View> */}
           <Stack.Screen
+            name="Cart"
+            component={CartScreen}
+            options={{ headerShown: false }}
+          />
+          {/* <Stack.Screen
             name="Register"
             component={RegistrationScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Stack.Screen
             name="Redirect"
             component={Redirect}
