@@ -14,16 +14,35 @@ import { Button } from "react-native-paper";
 export default function ProductDetail() {
   const getToken = async () => {
     const token = await SecureStore.getItemAsync("Authorization");
+    // const [productsDetails, setProductsDetails] = React.useState([]);
+    // const getProductsDetails = async () => {
+    //   const products = await axios.get(
+    //     "http://192.168.1.186:8000/api/products/1",
+    //     {
+    //       headers: { Authorization: `Bearer ${token}` },
+    //     }
+    //   );
+    //   // setProducts(products);
+    //   return products.data;
+    // };
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     const pro_item = await getProductsDetails();
+    //     console.log("----->", pro_item);
+    //     setProductsData(pro_item);
+    //   };
+    //   fetchData();
+    // }, []);
     //console.log("-------------", token);
-    const product = await Axios.get(
-      "http://192.168.1.186:8000/api/products/1",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(product.data);
+    // const product = await Axios.get(
+    //   "http://192.168.1.186:8000/api/products/1",
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }
+    // );
+    // console.log(product.data);
     // try {
 
     // } catch (error) {

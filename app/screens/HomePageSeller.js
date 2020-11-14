@@ -21,15 +21,11 @@ function HomePageSeller(props) {
   const [productsData, setProductsData] = React.useState([]);
 
   const getProductsData = async () => {
-    const token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9wYWNpZmljLWNpdGFkZWwtNjI4NDkuaGVyb2t1YXBwLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTYwNTI4MTU1OSwiZXhwIjoxNjA1Mjg1MTU5LCJuYmYiOjE2MDUyODE1NTksImp0aSI6Im1oY1FQaXRjaFMwczNyQUkiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.PVghHKIZ2KyJxQDci2p6mVpsb8PFELR6aGmNx6F0_H4";
+    let token = await SecureStore.getItemAsync("Authorization");
 
-    const products = await axios.get(
-      "https://pacific-citadel-62849.herokuapp.com/api/products",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const products = await axios.get("http://192.168.1.186:8000/api/products", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     // setProducts(products);
     return products.data;
   };
@@ -151,6 +147,49 @@ function HomePageSeller(props) {
             {productsData &&
               productsData.map((product) => {
                 console.log("donneeeeee", product);
+                return (
+                  <View style={styles.eachProduct} key={product.id}>
+                    {/* single product  */}
+                    <View>
+                      {/* image */}
+                      <Image
+                        source={require("../assets/products/product1.png")}
+                      />
+                    </View>
+                    <View>
+                      {/* details */}
+                      <View>
+                        {/* name */}
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "baseline",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 15,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {product.name}
+                          </Text>
+                          <TouchableHighlight
+                            onPress={handleBadge}
+                            underlayColor="white"
+                          >
+                            <Image
+                              source={require("../assets/icons/add.png")}
+                              style={{ width: 19, height: 18, marginLeft: 40 }}
+                            />
+                          </TouchableHighlight>
+                        </View>
+                        {/* price */}
+                        <Text>{product.price}</Text>
+                      </View>
+                    </View>
+                  </View>
+                );
               })}
           </View>
         </View>
@@ -255,6 +294,7 @@ const styles = StyleSheet.create({
   },
   products: {
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-around",
     alignItems: "baseline",
     paddingTop: 6,

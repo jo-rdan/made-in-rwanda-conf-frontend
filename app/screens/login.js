@@ -30,7 +30,7 @@ const Login = ({ navigation }) => {
       "999999999",
       tok
     );
-    return navigation.navigate("Dashboard");
+    return navigation.navigate("Home");
     // let data = await results.json();
     // await SecureStore.setItemAsync("Authorization", results.access_token);
     // console.log(
@@ -82,7 +82,7 @@ const Login = ({ navigation }) => {
           <Button
             style={{ borderRadius: 40 }}
             color="#ff0f00"
-            onPress={() => alert("Login is working")}
+            onPress={() => navigation.navigate("Register")}
           >
             Create an Account
           </Button>

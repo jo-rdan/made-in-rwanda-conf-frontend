@@ -25,14 +25,19 @@ export default function App() {
           {/* <View style={styles.container}>
             <RegistrationScreen />
           </View> */}
-          {/* <Stack.Screen
-            name="Register"
-            component={RegistrationScreen}
-            options={{ headerShown: false }}
-          /> */}
           <Stack.Screen
             name="Login"
             component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegistrationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomePageSeller}
             options={{ headerShown: false }}
           />
           <Stack.Screen

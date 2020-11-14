@@ -49,14 +49,14 @@ function RegistrationScreen({ navigation }) {
         {
           fname,
           lname,
-          phone: `+250${phone}`,
+          phone: `250${phone}`,
           email,
           password,
           password_confirmation,
           role,
         }
       );
-      if (results.status === 201) return navigation.navigate("Redirect");
+      if (results.status === 201) return navigation.navigate("Login");
     } catch (error) {
       setErrorMessage({ message: error.response.data.error, show: true });
       setTimeout(() => {
