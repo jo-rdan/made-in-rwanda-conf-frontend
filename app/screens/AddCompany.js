@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect,useState} from 'react';
 
 import {
   StyleSheet,
@@ -15,7 +15,7 @@ import axios from 'axios';
 
 function AddCompany() {
 
-  const [userData, setUserData] = React.useState({
+  const [userData, setUserData] =React.useState({
     CName: "",
     CAddress: "",
     CDescription: "",
@@ -30,11 +30,11 @@ function AddCompany() {
   const handleSubmit = async () => {
     const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMTg2OjgwMDBcL2FwaVwvbG9naW4iLCJpYXQiOjE2MDUyNTg1MTcsImV4cCI6MTYwNTI2MjExNywibmJmIjoxNjA1MjU4NTE3LCJqdGkiOiJYQ2I0WTdYMWVvQlFxajVOIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.A2UaX2heYClo2yB0Y52Gw2Hhs8C5UZBTF8gyhgJMdu4'
     try {
-      const {
+        const {
         CName,
-    CAddress,
-    CDescription,
-    CLogo
+        CAddress,
+        CDescription,
+        CLogo
       } = userData;
       const results = await axios.post(
         "http://192.168.1.186:8000/api/companies",
@@ -51,6 +51,7 @@ function AddCompany() {
         }
         );
         console.log('data', results);
+
         if (results.status === 201) return navigation.navigate("Company");
       } catch (error) {
       // setErrorMessage({ message: error.response.data.error, show: true });
@@ -61,7 +62,7 @@ function AddCompany() {
   };
 
   //Image upload
-  const [image, setImage] = useState(null);
+  const [image, setImage] = React.useState(null);
 
   useEffect(() => {
     (async () => {
@@ -96,18 +97,11 @@ function AddCompany() {
         <Text style={styles.header}>Add Company</Text>
       </View>
       <View>
-        {/* <Image
-          source={require('../assets/photoLogo.png')}
-          style={{
-            width: '25%', height: 57, marginTop: 26,
-            marginLeft: 135, marginRight: 50,
-          }}
        
-        /> */}
         {image && <Image source={{ uri: image }} 
         style={{ width: 140, height: 120, alignItems: 'center', marginHorizontal: '31%', marginVertical: '4%' }} />}
         <TouchableOpacity onPress={pickImage} style={styles.button}>
-          <Text style={styles.buttonText}>Add Product</Text>
+          <Text style={styles.buttonText}>Add Company</Text>
         </TouchableOpacity>
       </View>
 
@@ -147,10 +141,12 @@ function AddCompany() {
           color="#FF0F00"
           onPress={handleSubmit}
           // onPress = {()=> alert("Okay Ready to go")}
+          
           disabled={
               userData.CName &&
               userData.CAddress &&
-              userData.CDescription              ? false
+              userData.CDescription             
+               ? false
               :true
           }
         >Set up Your Company</Button>
@@ -186,15 +182,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f4f3f3',
     padding: 20,
     borderRadius: 5,
-    marginLeft: '5%',
+    marginLeft: '8%',
+    marginRight:'5%',
     marginTop: "10%",
+    width: "85%",
+    
   },
   buttonText: {
     fontSize: 18,
     color: '#1B2646',
+    padding:10,
+    paddingStart:80,
   },
 
 
