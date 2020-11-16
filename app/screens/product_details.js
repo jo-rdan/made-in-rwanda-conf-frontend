@@ -9,12 +9,18 @@ import {
   View,
   Platform,
   StatusBar,
+  SafeAreaView,
+  TouchableHighlight,
 } from "react-native";
+import axios from "axios";
+
 import { Button } from "react-native-paper";
-export default function ProductDetail() {
+export default function ProductDetail(props) {
+  const [productsDetails, setProductsDetails] = React.useState([]);
+
   const getToken = async () => {
     const token = await SecureStore.getItemAsync("Authorization");
-    // const [productsDetails, setProductsDetails] = React.useState([]);
+
     // const getProductsDetails = async () => {
     //   const products = await axios.get(
     //     "http://192.168.1.186:8000/api/products/1",
@@ -51,20 +57,33 @@ export default function ProductDetail() {
   };
 
   useEffect(() => {
-    getToken();
+    const getProductsDetails = async () => {
+      const token = await SecureStore.getItemAsync("Authorization");
+      //console.log("props", props.route.params.productId);
+      const products = await axios.get(
+        `http://192.168.1.186:8000/api/products/${props.route.params.productId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setProductsDetails(products.data);
+      console.log("hshhsahv", productsDetails);
+      //return products.data;
+    };
+    getProductsDetails();
   }, []);
 
   return (
-    <ScrollView style={{ backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.topBar}>
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
             <Image source={require("../assets/settings.png")} />
             <Text style={{ color: "#fff" }}>Product Details</Text>
           </View>
-          <View>
+          <TouchableHighlight onPress={() => logout(navigation)}>
             <Image source={require("../assets/logout.png")} />
-          </View>
+          </TouchableHighlight>
         </View>
       </View>
 
@@ -77,10 +96,10 @@ export default function ProductDetail() {
       <View style={{ marginTop: 20 }}>
         <View style={styles.btn}>
           <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-            Product Name:
+            Product Name: {productsDetails.name}
           </Text>
           <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
-            Product Price:
+            Product Price: {productsDetails.price}
           </Text>
         </View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
@@ -117,19 +136,13 @@ export default function ProductDetail() {
                 bottom: 25,
               }}
             >
-              <Text>VolksWagen Rwanda</Text>
+              <Text>productsDetails.company.name</Text>
             </View>
           </View>
-          <Text>
-            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
-            in laying out print, graphic or web designs. The passage is
-            attributed to an unknown typesetter in the 15th century who is
-            thought to have scrambled parts of Cicero's De Finibus Bonorum et
-            Malorum for use in a type specimen book
-          </Text>
+          <Text>productsDetails.company.description</Text>
         </View>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 

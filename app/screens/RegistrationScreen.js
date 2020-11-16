@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Image, View, StyleSheet, Text } from "react-native";
 import {
   TextInput,
@@ -151,6 +151,7 @@ function RegistrationScreen({ navigation }) {
             >
               I am a {userData.role ? userData.role : "..."}
             </Text>
+
             <Portal>
               <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>Choose an option</Dialog.Title>

@@ -14,6 +14,7 @@ import {
 import { TextInput, Badge } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { logout } from "../helpers/logout";
 
 function HomePageSeller({ navigation }) {
   const [screenHeight, setScreenHeight] = React.useState(0);
@@ -89,7 +90,9 @@ function HomePageSeller({ navigation }) {
           <Badge size={13} visible={badgeCount > 0}>
             {badgeCount}
           </Badge>
-          <Image source={require("../assets/logout.png")} />
+          <TouchableHighlight onPress={() => logout(navigation)}>
+            <Image source={require("../assets/logout.png")} />
+          </TouchableHighlight>
         </View>
       </View>
       <ScrollView>
@@ -179,9 +182,17 @@ function HomePageSeller({ navigation }) {
                     {/* single product  */}
                     <View>
                       {/* image */}
-                      <Image
-                        source={require("../assets/products/product1.png")}
-                      />
+                      <TouchableHighlight
+                        onPress={() =>
+                          navigation.navigate("ProductDetail", {
+                            productId: product.id,
+                          })
+                        }
+                      >
+                        <Image
+                          source={require("../assets/products/product1.png")}
+                        />
+                      </TouchableHighlight>
                     </View>
                     <View>
                       {/* details */}
