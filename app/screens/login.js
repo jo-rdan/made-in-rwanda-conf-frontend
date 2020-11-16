@@ -2,6 +2,7 @@ import * as React from "react";
 import { Image, View, ScrollView, StyleSheet, Text } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { TextInput, Button, Card, Title } from "react-native-paper";
+import Axios from "axios";
 
 const Login = ({ navigation }) => {
   const [phone, setPhone] = React.useState();
@@ -16,18 +17,27 @@ const Login = ({ navigation }) => {
       body: JSON.stringify({ phone: `250${phone}`, password: password }),
     });
     let data = await results.json();
-    console.log(data.access_token);
+    console.log(data);
     await SecureStore.setItemAsync("Authorization", data.access_token);
     let tok = await SecureStore.getItemAsync("Authorization");
-    console.log(
-      "results",
-      data,
-      "----",
-      await SecureStore.isAvailableAsync(),
-      "999999999",
-      tok
+    if (data.user.role !== "seller") return navigation.navigate("Home");
+    const myCompanies = await Axios.get(
+      "http://192.168.1.186:8000/api/mycompanies",
+      { headers: { Authorization: `Bearer ${tok}` } }
     );
-    return navigation.navigate("Home");
+    //console.log(myCompanies.data.length <= 0);
+    if (myCompanies.data.length <= 0)
+      return navigation.navigate("CompanySetup");
+    return navigation.navigate("Dashboard");
+    // console.log(
+    //   "results",
+    //   data,
+    //   "----",
+    //   await SecureStore.isAvailableAsync(),
+    //   "999999999",
+    //   tok
+    // );
+
     // let data = await results.json();
     // await SecureStore.setItemAsync("Authorization", results.access_token);
     // console.log(
