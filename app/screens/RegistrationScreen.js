@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Image, View, StyleSheet, Text } from "react-native";
 import {
   TextInput,
@@ -56,7 +56,7 @@ function RegistrationScreen({ navigation }) {
           role,
         }
       );
-      if (results.status === 201) return navigation.navigate("Redirect");
+      if (results.status === 201) return navigation.navigate("AddCompany");
     } catch (error) {
       setErrorMessage({ message: error.response.data.error, show: true });
       setTimeout(() => {
@@ -151,6 +151,7 @@ function RegistrationScreen({ navigation }) {
             >
               I am a {userData.role ? userData.role : "..."}
             </Text>
+            
             <Portal>
               <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>Choose an option</Dialog.Title>
