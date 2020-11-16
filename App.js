@@ -12,6 +12,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Redirect from "./app/screens/Redirect";
 import AddProduct from "./app/screens/AddProduct";
+import CartScreen from "./app/screens/CartScreen";
+import HomePageSeller from "./app/screens/HomePageSeller";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +24,14 @@ export default function App() {
         <Stack.Navigator>
          
          
+          {/* <View style={styles.container}>
+            <RegistrationScreen />
+          </View> */}
+          {/* <Stack.Screen
+            name="Cart"
+            component={CartScreen}
+            options={{ headerShown: false }}
+          /> */}
           {/* <Stack.Screen
             name="Register"
             component={RegistrationScreen}
@@ -32,11 +42,11 @@ export default function App() {
             component={Redirect}
             options={{ headerShown: false }}
           /> */} 
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Company"
             component={AddCompany}
             options={{ headerShown: false }}
-          /> */}
+          />
           <Stack.Screen
           name="Product"
           component={AddProduct}
@@ -60,6 +70,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     backgroundColor: "#fff",
     flex: 1,
     alignItems: 'center',
