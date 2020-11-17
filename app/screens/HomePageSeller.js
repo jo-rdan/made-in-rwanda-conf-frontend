@@ -23,6 +23,16 @@ function HomePageSeller({ navigation }) {
   const [productsData, setProductsData] = React.useState([]);
   const [selectedProduct, setSelectedProduct] = React.useState([]);
   const [product, setProduct] = React.useState();
+  const [categories, setCategories] = React.useState();
+  const [selectedCategory, setSelectedCategory] = React.useState();
+  let icons = [
+    require("../assets/icons/art.png"),
+    require("../assets/icons/beauty.png"),
+    require("../assets/icons/food.png"),
+    require("../assets/icons/clothing.png"),
+    require("../assets/icons/tech.png"),
+    require("../assets/icons/drinks.png"),
+  ];
 
   const getProductsData = async () => {
     let token = await SecureStore.getItemAsync("Authorization");
@@ -35,8 +45,17 @@ function HomePageSeller({ navigation }) {
   };
   useEffect(() => {
     const fetchData = async () => {
+      let token = await SecureStore.getItemAsync("Authorization");
       const allProducts = await getProductsData();
       setProductsData(allProducts);
+      const categories = await axios.get(
+        "http://192.168.1.186:8000/api/categories",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      // console.log("php-----", categories);
+      setCategories(categories.data);
     };
     fetchData();
   }, []);
@@ -123,42 +142,21 @@ function HomePageSeller({ navigation }) {
             </Text>
           </View>
           <View style={styles.categories}>
-            <View>
-              {/* icons */}
-              <Image source={require("../assets/icons/tech.png")} />
-              {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}>Tech</Text>
-            </View>
-            <View>
-              {/* icons */}
-              <Image source={require("../assets/icons/beauty.png")} />
-              {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}>Beauty</Text>
-            </View>
-            <View>
-              {/* icons */}
-              <Image source={require("../assets/icons/clothing.png")} />
-              {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}>Fashion</Text>
-            </View>
-            <View>
-              {/* icons */}
-              <Image source={require("../assets/icons/art.png")} />
-              {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}>Art</Text>
-            </View>
-            <View>
-              {/* icons */}
-              <Image source={require("../assets/icons/drinks.png")} />
-              {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}>Drinks</Text>
-            </View>
-            <View>
-              {/* icons */}
-              <Image source={require("../assets/icons/food.png")} />
-              {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}>Food</Text>
-            </View>
+            {categories &&
+              categories.map((category, index) => {
+                return (
+                  <View key={category.id}>
+                    {/* icons */}
+                    <TouchableHighlight onPress={() => naviga}>
+                      <Image source={icons[index]} />
+                    </TouchableHighlight>
+                    {/* texts */}
+                    <Text style={{ fontSize: 12, textAlign: "center" }}>
+                      {category.name}
+                    </Text>
+                  </View>
+                );
+              })}
           </View>
         </View>
         <View style={styles.productsCompo}>

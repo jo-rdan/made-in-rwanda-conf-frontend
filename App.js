@@ -28,9 +28,11 @@ export default function App() {
     // <PaperProvider>
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <View style={styles.container}>
-            <RegistrationScreen />
-          </View> */}
+        <Stack.Screen
+          name="Welcome"
+          component={HomePage}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}

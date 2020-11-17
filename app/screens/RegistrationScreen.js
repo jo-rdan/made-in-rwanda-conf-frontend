@@ -56,6 +56,7 @@ function RegistrationScreen({ navigation }) {
           role,
         }
       );
+
       if (results.status === 201) return navigation.navigate("Login");
     } catch (error) {
       setErrorMessage({ message: error.response.data.error, show: true });

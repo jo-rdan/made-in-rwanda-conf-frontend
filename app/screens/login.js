@@ -17,7 +17,8 @@ const Login = ({ navigation }) => {
       body: JSON.stringify({ phone: `250${phone}`, password: password }),
     });
     let data = await results.json();
-    console.log(data);
+    if (data.error) return alert(data.error);
+
     await SecureStore.setItemAsync("Authorization", data.access_token);
     let tok = await SecureStore.getItemAsync("Authorization");
     if (data.user.role !== "seller") return navigation.navigate("Home");
@@ -29,26 +30,6 @@ const Login = ({ navigation }) => {
     if (myCompanies.data.length <= 0)
       return navigation.navigate("CompanySetup");
     return navigation.navigate("Dashboard");
-    // console.log(
-    //   "results",
-    //   data,
-    //   "----",
-    //   await SecureStore.isAvailableAsync(),
-    //   "999999999",
-    //   tok
-    // );
-
-    // let data = await results.json();
-    // await SecureStore.setItemAsync("Authorization", results.access_token);
-    // console.log(
-    //   "results",
-    //   data,
-    //   "----",
-    //   await SecureStore.isAvailableAsync(),
-    //   "999999999",
-    //   await SecureStore.getItemAsync("Authorization")
-    // );
-    //await SecureStore.setItemAsync("Authorization", results.access_token);
   };
   return (
     <View style={styles.background}>

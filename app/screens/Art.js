@@ -14,7 +14,7 @@ import { TextInput, Badge } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import ImageModal from 'react-native-image-modal';
+import ImageModal from "react-native-image-modal";
 function Art(props) {
   const [screenHeight, setScreenHeight] = React.useState(0);
   const { height } = Dimensions.get("window");
@@ -47,7 +47,6 @@ function Art(props) {
   const handleBadge = () => {
     setBadgeCount(badgeCount + 1);
   };
-  
 
   return (
     // topbar
@@ -57,7 +56,9 @@ function Art(props) {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-          <Text style={{ color: "#fff", marginLeft: 20,fontSize:18 }}>Art</Text>
+          <Text style={{ color: "#fff", marginLeft: 20, fontSize: 18 }}>
+            Art
+          </Text>
         </View>
         <View style={styles.iconsNav}>
           <Image
@@ -71,7 +72,7 @@ function Art(props) {
         </View>
       </View>
       <ScrollView>
-        <View style={styles.searchCompo}>
+        {/* <View style={styles.searchCompo}>
           <View style={styles.searchField}>
             <TextInput
               placeholder="Search products"
@@ -83,10 +84,9 @@ function Art(props) {
           <View style={styles.searchIcon}>
             <Image source={require("../assets/search.png")} />
           </View>
-        </View>
+        </View> */}
         <View style={styles.categoriesCompo}>
-          <View>
-            {/* title */}
+          {/* <View>
             <Text
               style={{
                 fontSize: 15,
@@ -96,19 +96,22 @@ function Art(props) {
             >
               Categories
             </Text>
-          </View>
+          </View> */}
           <View style={styles.categories}>
             <View>
               {/* icons */}
               <Image source={require("../assets/icons/tech.png")} />
               {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }} 
-              //onClick={Technology}
-              >Tech</Text>
+              <Text
+                style={{ fontSize: 12, textAlign: "center" }}
+                //onClick={Technology}
+              >
+                Tech
+              </Text>
             </View>
             <View>
               {/* icons */}
-             
+
               <Image source={require("../assets/icons/beauty.png")} />
               {/* texts */}
               <Text style={{ fontSize: 12, textAlign: "center" }}>Beauty</Text>
@@ -117,49 +120,65 @@ function Art(props) {
               {/* icons */}
               <Image source={require("../assets/icons/clothing.png")} />
               {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}
-              // onClick={Fashion}
-              >Fashion</Text>
+              <Text
+                style={{ fontSize: 12, textAlign: "center" }}
+                // onClick={Fashion}
+              >
+                Fashion
+              </Text>
             </View>
             <View>
               {/* icons */}
               <Image source={require("../assets/icons/art.png")} />
               {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center",color:'rgb(255,0,0)' }}
-              // onClick={Art}
-              >Art</Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  textAlign: "center",
+                  color: "rgb(255,0,0)",
+                }}
+                // onClick={Art}
+              >
+                Art
+              </Text>
             </View>
             <View>
               {/* icons */}
               <Image source={require("../assets/icons/drinks.png")} />
               {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}
-              //  onClick={Drinks}
-              >Drinks</Text>
+              <Text
+                style={{ fontSize: 12, textAlign: "center" }}
+                //  onClick={Drinks}
+              >
+                Drinks
+              </Text>
             </View>
             <View>
               {/* icons */}
               <Image source={require("../assets/icons/food.png")} />
               {/* texts */}
-              <Text style={{ fontSize: 12, textAlign: "center" }}
-               //onClick={home}
-              >Food</Text>
+              <Text
+                style={{ fontSize: 12, textAlign: "center" }}
+                //onClick={home}
+              >
+                Food
+              </Text>
             </View>
           </View>
         </View>
-       
+
         <View style={styles.productsCompo}>
           <View>
             {/* title */}
             <Text
               style={{
                 fontSize: 15,
-                 fontWeight: "bold",
+                fontWeight: "bold",
                 padding: 10,
-                color:"#1B2646",
+                color: "#1B2646",
               }}
             >
-             Artistic products
+              Artistic products
             </Text>
           </View>
           <View style={styles.products}>
@@ -167,63 +186,58 @@ function Art(props) {
               productsData.map((product) => {
                 console.log("donneeeeee", product);
               })} */}
+            <View>
+              {/* image */}
               <View>
-                {/* image */}
-                <View>
-                
-                  <ImageModal
-                  resizeMode='contain'
-                  source={require("../assets/brands/hand.png")} 
+                <ImageModal
+                  resizeMode="contain"
+                  source={require("../assets/brands/hand.png")}
                   //  style={styles.pics}
-                  />
-                
-                </View>
-                <View>
+                />
+              </View>
+              <View>
                 {/* details */}
                 <View>
                   {/* name */}
                   <Text
                     style={{
                       fontSize: 15,
-                    
                     }}
                   >
-                 Hand Baskets
+                    Hand Baskets
                   </Text>
-                  <Text 
-                   style={{
+                  <Text
+                    style={{
                       fontSize: 15,
                       //onClick={}
-                    }}>
+                    }}
+                  >
                     10,000 Rwf
-
                   </Text>
                 </View>
               </View>
+            </View>
+            <View>
+              {/* image */}
+              <View>
+                <Image source={require("../assets/brands/gongo.png")} />
               </View>
               <View>
-                {/* image */}
-                <View>
-                  <Image source={require("../assets/brands/gongo.png")} />
-                </View>
-                <View>
                 {/* details */}
                 <View>
                   {/* name */}
                   <Text
                     style={{
                       fontSize: 15,
-                    
-                      alignContent:"center"
+
+                      alignContent: "center",
                     }}
                   >
-                  Imigongo {"\n"}50,000 Rwf
+                    Imigongo {"\n"}50,000 Rwf
                   </Text>
                 </View>
               </View>
-              </View>
-
-              
+            </View>
           </View>
         </View>
         <View style={styles.brandsCompo}>
@@ -232,9 +246,9 @@ function Art(props) {
             <Text
               style={{
                 fontSize: 15,
-          fontWeight:"bold",
+                fontWeight: "bold",
                 padding: 10,
-                color:"#1B2646",
+                color: "#1B2646",
               }}
             >
               Top brands
@@ -246,9 +260,7 @@ function Art(props) {
               <View>
                 {/* image */}
                 <View>
-                  <Image source={require("../assets/brands/basket.png")} 
-                   
-                  />
+                  <Image source={require("../assets/brands/basket.png")} />
                 </View>
               </View>
               <View>
@@ -258,10 +270,9 @@ function Art(props) {
                   <Text
                     style={{
                       fontSize: 15,
-                     
                     }}
                   >
-                   Imitako Center
+                    Imitako Center
                   </Text>
                 </View>
               </View>
@@ -281,17 +292,15 @@ function Art(props) {
                   <Text
                     style={{
                       fontSize: 15,
-                     
-                      alignContent:"center"
+
+                      alignContent: "center",
                     }}
                   >
-                   Inema Art center
-
+                    Inema Art center
                   </Text>
                 </View>
               </View>
             </View>
-            
           </View>
           <View style={styles.brands}>
             <View>
@@ -299,9 +308,7 @@ function Art(props) {
               <View>
                 {/* image */}
                 <View>
-                  <Image source={require("../assets/brands/imitako.png")} 
-                   
-                  />
+                  <Image source={require("../assets/brands/imitako.png")} />
                 </View>
               </View>
               <View>
@@ -311,10 +318,9 @@ function Art(props) {
                   <Text
                     style={{
                       fontSize: 15,
-                     
                     }}
                   >
-                   Hand Decoration
+                    Hand Decoration
                   </Text>
                 </View>
               </View>
@@ -334,17 +340,15 @@ function Art(props) {
                   <Text
                     style={{
                       fontSize: 15,
-                     
-                      alignContent:"center"
+
+                      alignContent: "center",
                     }}
                   >
-                   Ivuka Collections
-
+                    Ivuka Collections
                   </Text>
                 </View>
               </View>
             </View>
-            
           </View>
         </View>
       </ScrollView>
@@ -379,7 +383,7 @@ const styles = StyleSheet.create({
   eachProduct: {
     elevation: 3,
   },
- 
+
   iconsNav: {
     width: "20%",
     flexDirection: "row",
