@@ -37,7 +37,7 @@ function AddCompany({ navigation }) {
           name: CName,
           address: CAddress,
           description: CDescription,
-          image: CLogo,
+          image,
         },
         {
           headers: {
@@ -59,7 +59,7 @@ function AddCompany({ navigation }) {
 
   //Image upload
   const [image, setImage] = React.useState(null);
-
+  const [tempImage, setTempImage] = React.useState();
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -79,12 +79,26 @@ function AddCompany({ navigation }) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true,
     });
 
     //console.log(result);
 
-    if (!result.cancelled) {
-      setImage(result.uri);
+    try {
+      if (!result.cancelled) {
+        setTempImage(result.uri);
+        let base64Img = `data:image/jpg;base64,${result.base64}`;
+        let apiUrl =
+          "https://api.cloudinary.com/v1_1/focus-faith-family/image/upload";
+        let data = {
+          file: base64Img,
+          upload_preset: "focus_faith",
+        };
+        const image = await axios.post(apiUrl, data);
+        setImage(image.data.secure_url);
+      }
+    } catch (error) {
+      return error.response;
     }
   };
 
@@ -96,7 +110,7 @@ function AddCompany({ navigation }) {
       <View>
         {image && (
           <Image
-            source={{ uri: image }}
+            source={{ uri: tempImage }}
             style={{
               width: 140,
               height: 120,
