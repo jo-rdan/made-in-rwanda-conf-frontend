@@ -19,7 +19,7 @@ export default function DashBoard({ navigation }) {
     const getData = async () => {
       const token = await SecureStore.getItemAsync("Authorization");
       const companies = await axios.get(
-        "http://192.168.1.186:8000/api/mycompanies",
+        "https://pacific-citadel-62849.herokuapp.com/api/mycompanies",
         {
           headers: {
             Authorization: `Bearer ${token}`,

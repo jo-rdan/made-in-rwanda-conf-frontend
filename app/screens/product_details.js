@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 
 import { Button } from "react-native-paper";
+import { logout } from "../helpers/logout";
 export default function ProductDetail(props) {
   const [productsDetails, setProductsDetails] = React.useState([]);
 
@@ -23,7 +24,7 @@ export default function ProductDetail(props) {
 
     // const getProductsDetails = async () => {
     //   const products = await axios.get(
-    //     "http://192.168.1.186:8000/api/products/1",
+    //     "https://pacific-citadel-62849.herokuapp.com/api/products/1",
     //     {
     //       headers: { Authorization: `Bearer ${token}` },
     //     }
@@ -41,7 +42,7 @@ export default function ProductDetail(props) {
     // }, []);
     //console.log("-------------", token);
     // const product = await Axios.get(
-    //   "http://192.168.1.186:8000/api/products/1",
+    //   "https://pacific-citadel-62849.herokuapp.com/api/products/1",
     //   {
     //     headers: {
     //       Authorization: `Bearer ${token}`,
@@ -61,27 +62,27 @@ export default function ProductDetail(props) {
       const token = await SecureStore.getItemAsync("Authorization");
       //console.log("props", props.route.params.productId);
       const products = await axios.get(
-        `http://192.168.1.186:8000/api/products/${props.route.params.productId}`,
+        `https://pacific-citadel-62849.herokuapp.com/api/products/${props.route.params.productId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       setProductsDetails(products.data);
-      console.log("hshhsahv", productsDetails);
+      console.log("hshhsahv", productsDetails.company.name);
       //return products.data;
     };
     getProductsDetails();
   }, []);
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff", flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.topBar}>
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
             <Image source={require("../assets/settings.png")} />
             <Text style={{ color: "#fff" }}>Product Details</Text>
           </View>
-          <TouchableHighlight onPress={() => logout(navigation)}>
+          <TouchableHighlight onPress={() => logout(props.navigation)}>
             <Image source={require("../assets/logout.png")} />
           </TouchableHighlight>
         </View>

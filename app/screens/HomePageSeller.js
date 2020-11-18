@@ -37,9 +37,12 @@ function HomePageSeller({ navigation }) {
   const getProductsData = async () => {
     let token = await SecureStore.getItemAsync("Authorization");
 
-    const products = await axios.get("http://192.168.1.186:8000/api/products", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const products = await axios.get(
+      "https://pacific-citadel-62849.herokuapp.com/api/products",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     // setProducts(products);
     return products.data;
   };
@@ -49,36 +52,28 @@ function HomePageSeller({ navigation }) {
       const allProducts = await getProductsData();
       setProductsData(allProducts);
       const categories = await axios.get(
-        "http://192.168.1.186:8000/api/categories",
+        "https://pacific-citadel-62849.herokuapp.com/api/categories",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      // console.log("php-----", categories);
       setCategories(categories.data);
     };
     fetchData();
   }, []);
 
-  // let badgeCount = 0;
   const handleBadge = async (product) => {
-    // console.log("==========>>", product);
-    // setBadgeCount(badgeCount + 1);
-    // setSelectedProduct([...selectedProduct, product]);
     const token = await SecureStore.getItemAsync("Authorization");
     console.log("adddd", product.id, token);
-    // const addToCart = await axios.post(
-    //   `http://192.168.1.186:8000/api/products/${product}/addtocart`,
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
     const addToCart = await axios.post(
-      `http://192.168.1.186:8000/api/products/${product.id}/addtocart`,
+      `https://pacific-citadel-62849.herokuapp.com/api/products/${product.id}/addtocart`,
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    console.log("adddd", addToCart);
+    //console.log("adddd", addToCart);
+    //navigation.navigate("Cart");
   };
   const handleAddToCart = async () => {
     navigation.navigate("Cart");
@@ -147,7 +142,7 @@ function HomePageSeller({ navigation }) {
                 return (
                   <View key={category.id}>
                     {/* icons */}
-                    <TouchableHighlight onPress={() => naviga}>
+                    <TouchableHighlight>
                       <Image source={icons[index]} />
                     </TouchableHighlight>
                     {/* texts */}
@@ -188,7 +183,17 @@ function HomePageSeller({ navigation }) {
                         }
                       >
                         <Image
-                          source={require("../assets/products/product1.png")}
+                          style={{
+                            width: 150,
+                            height: 150,
+                            // resizeMode: "center",
+                          }}
+                          source={{
+                            uri:
+                              product.image !== null
+                                ? product.image
+                                : "https://res.cloudinary.com/focus-faith-family/image/upload/v1605697794/vnsj0swzk1therydnapr.jpg",
+                          }}
                         />
                       </TouchableHighlight>
                     </View>

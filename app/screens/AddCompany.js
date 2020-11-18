@@ -32,7 +32,7 @@ function AddCompany({ navigation }) {
     try {
       const { CName, CAddress, CDescription, CLogo } = userData;
       const results = await axios.post(
-        "http://192.168.1.186:8000/api/companies",
+        "https://pacific-citadel-62849.herokuapp.com/api/companies",
         {
           name: CName,
           address: CAddress,

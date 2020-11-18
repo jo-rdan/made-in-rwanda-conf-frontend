@@ -50,7 +50,7 @@ function AddProduct({ navigation }) {
       const { PName, PPrice, PPhoto, categoryId, companyId } = userproduct;
       console.log("datooooooa", userproduct);
       const results = await axios.post(
-        "http://192.168.1.186:8000/api/company/addproduct",
+        "https://pacific-citadel-62849.herokuapp.com/api/company/addproduct",
         {
           name: PName,
           price: PPrice,
@@ -93,7 +93,7 @@ function AddProduct({ navigation }) {
     })();
     const fetchCompanies = async () => {
       const companies = await axios.get(
-        "http://192.168.1.186:8000/api/companies",
+        "https://pacific-citadel-62849.herokuapp.com/api/companies",
         {
           headers: {
             Authorization: `Bearer ${await SecureStore.getItemAsync(
@@ -107,7 +107,7 @@ function AddProduct({ navigation }) {
     };
     const fetchCategories = async () => {
       const categories = await axios.get(
-        "http://192.168.1.186:8000/api/categories",
+        "https://pacific-citadel-62849.herokuapp.com/api/categories",
         {
           headers: {
             Authorization: `Bearer ${await SecureStore.getItemAsync(

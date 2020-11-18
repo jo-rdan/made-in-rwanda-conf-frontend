@@ -14,25 +14,36 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 export default function Checkout(props) {
   const [total, setTotal] = React.useState();
-  state = {
-    total: 45000,
+  const momoPay = async () => {
+    try {
+      let toke = await SecureStore.getItemAsync("Authorization");
+      const momo = await axios.post(
+        "https://pacific-citadel-62849.herokuapp.com/api/checkout/payment",
+        {},
+        {
+          headers: { Authorization: `Bearer ${toke}` },
+        }
+      );
+      console.log("momo");
+    } catch (error) {
+      console.log(error.response.data);
+    }
   };
-  const momoPay = () => {
-    alert("Thank you");
-  };
+  //momoPay();
   useEffect(() => {
     const fetchData = async () => {
       let token = await SecureStore.getItemAsync("Authorization");
       const productsToCart = await axios.get(
-        "http://192.168.1.186:8000/api/checkout",
+        "https://pacific-citadel-62849.herokuapp.com/api/checkout",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       // setProducts(productsToCart.data.products);
       // const allProducts = await getProductsData();
-      // setProductsData(allProducts);
+      setTotal(productsToCart.data.total);
     };
+
     fetchData();
     // console.log("pppp", props);
     // setTotal(props.route.params.total);
