@@ -54,23 +54,14 @@ function HomePageSeller({ navigation }) {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      // console.log("php-----", categories);
       setCategories(categories.data);
     };
     fetchData();
   }, []);
 
-  // let badgeCount = 0;
   const handleBadge = async (product) => {
-    // console.log("==========>>", product);
-    // setBadgeCount(badgeCount + 1);
-    // setSelectedProduct([...selectedProduct, product]);
     const token = await SecureStore.getItemAsync("Authorization");
     console.log("adddd", product.id, token);
-    // const addToCart = await axios.post(
-    //   `http://192.168.1.186:8000/api/products/${product}/addtocart`,
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
     const addToCart = await axios.post(
       `http://192.168.1.186:8000/api/products/${product.id}/addtocart`,
       {},
@@ -78,7 +69,8 @@ function HomePageSeller({ navigation }) {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    console.log("adddd", addToCart);
+    //console.log("adddd", addToCart);
+    //navigation.navigate("Cart");
   };
   const handleAddToCart = async () => {
     navigation.navigate("Cart");
@@ -147,7 +139,7 @@ function HomePageSeller({ navigation }) {
                 return (
                   <View key={category.id}>
                     {/* icons */}
-                    <TouchableHighlight onPress={() => naviga}>
+                    <TouchableHighlight>
                       <Image source={icons[index]} />
                     </TouchableHighlight>
                     {/* texts */}
