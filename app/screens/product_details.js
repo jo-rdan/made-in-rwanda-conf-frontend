@@ -99,7 +99,7 @@ export default function ProductDetail(props) {
             Product Name: {productsDetails.name}
           </Text>
           <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
-            Product Price: {productsDetails.price}
+            Product Price: {productsDetails.price} Rwf
           </Text>
         </View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
@@ -136,10 +136,10 @@ export default function ProductDetail(props) {
                 bottom: 25,
               }}
             >
-              <Text>productsDetails.company.name</Text>
+              <Text>{productsDetails.company.name}</Text>
             </View>
           </View>
-          <Text>productsDetails.company.description</Text>
+          <Text>{productsDetails.company.description}</Text>
         </View>
       </View>
     </SafeAreaView>

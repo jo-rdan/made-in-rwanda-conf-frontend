@@ -9,6 +9,9 @@ import {
   StatusBar,
 } from "react-native";
 import { State, TouchableNativeFeedback } from "react-native-gesture-handler";
+import axios from "axios";
+
+import * as SecureStore from "expo-secure-store";
 export default function Checkout(props) {
   const [total, setTotal] = React.useState();
   state = {
@@ -18,8 +21,21 @@ export default function Checkout(props) {
     alert("Thank you");
   };
   useEffect(() => {
-    console.log("pppp", props);
-    setTotal(props.route.params.total);
+    const fetchData = async () => {
+      let token = await SecureStore.getItemAsync("Authorization");
+      const productsToCart = await axios.get(
+        "http://192.168.1.186:8000/api/checkout",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      // setProducts(productsToCart.data.products);
+      // const allProducts = await getProductsData();
+      // setProductsData(allProducts);
+    };
+    fetchData();
+    // console.log("pppp", props);
+    // setTotal(props.route.params.total);
   }, []);
 
   return (

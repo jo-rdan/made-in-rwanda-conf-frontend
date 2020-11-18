@@ -12,7 +12,10 @@ function CartScreen(props) {
   const [productPrice, setProductPrice] = React.useState(15000);
   const [animate, setAnimate] = React.useState(false);
   const [products, setProducts] = React.useState(null);
+  // const [productIds, setProductIds] = React.useState([]);
   let total = 0;
+  let productIds = [];
+  let numberOfItems = [];
   useEffect(() => {
     // console.log("pppp", props);
     // console.log(props.route.params.product);
@@ -42,20 +45,22 @@ function CartScreen(props) {
     // const checkout = await
     try {
       let token = await SecureStore.getItemAsync("Authorization");
+      console.log("product ids", productIds);
+
       const checkout = await axios.post(
         `http://192.168.1.186:8000/api/checkout`,
         {
-          "id[]": 2,
-          "numberOfItems[]": 1,
+          id: productIds,
+          numberOfItems,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("porrrrr", checkout);
-      // props.navigation.navigate("Checkout", { total })
+      // console.log("porrrrr", numberOfItems, checkout);
+      props.navigation.navigate("Checkout");
     } catch (error) {
-      console.log(error.response);
+      console.log("error");
     }
   };
   return (
@@ -69,39 +74,23 @@ function CartScreen(props) {
           <Image source={require("../assets/logout.png")} />
         </View>
       </View>
-      {/* added products */}
       <View style={styles.productTable}>
-        {/* header */}
         <View style={styles.productsHeader}>
-          {/* products header details here (product(s), unit price, quantity, total) */}
           <Text style={styles.headerText}>Product(s)</Text>
           <Text style={styles.headerText}>Unit price</Text>
-          {/* <Text style={styles.headerText}>Quantity</Text>
-          <Text style={styles.headerText}>Total</Text> */}
         </View>
-        {/* body */}
-        {/* products on cart body */}
-        {/* <Text>Uzuri Sandals</Text>
-          <Text>15,000 Rwf</Text>
-        <Text style={{ left: 10 }}>{unitTotal} Rwf</Text> */}
         {products &&
           products.map((product) => {
+            const items = 1;
+            // setProductIds([...productIds, product.id]);
+            productIds.push(product.id.toString());
+            numberOfItems.push(items.toString());
             total += product.price;
             return (
               <View style={styles.productsBody}>
                 {() => handleTotal(product)}
                 <Text>{product.name}</Text>
                 <Text>{product.price}</Text>
-                {/* <TextInput
-                  placeholder="Quantity"
-                  value={quantity}
-                  onChangeText={async (qty) => {
-                    setQuantity(parseInt(qty));
-                    setUnitTotal(quantity * product.price);
-                  }}
-                  style={{ width: "10%", height: 23, fontSize: 10, left: 10 }}
-                /> */}
-                {/* <Text style={{ left: 10 }}>{unitTotal} Rwf</Text> */}
               </View>
             );
           })}
