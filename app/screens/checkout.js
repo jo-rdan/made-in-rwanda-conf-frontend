@@ -18,7 +18,7 @@ export default function Checkout(props) {
     try {
       let toke = await SecureStore.getItemAsync("Authorization");
       const momo = await axios.post(
-        "http://192.168.1.186:8000/api/checkout/payment",
+        "https://pacific-citadel-62849.herokuapp.com/api/checkout/payment",
         {},
         {
           headers: { Authorization: `Bearer ${toke}` },
@@ -34,7 +34,7 @@ export default function Checkout(props) {
     const fetchData = async () => {
       let token = await SecureStore.getItemAsync("Authorization");
       const productsToCart = await axios.get(
-        "http://192.168.1.186:8000/api/checkout",
+        "https://pacific-citadel-62849.herokuapp.com/api/checkout",
         {
           headers: { Authorization: `Bearer ${token}` },
         }

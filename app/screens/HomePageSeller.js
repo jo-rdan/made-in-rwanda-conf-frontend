@@ -11,7 +11,7 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
 } from "react-native";
-import { TextInput, Badge } from "react-native-paper";
+import { TextInput, Badge, ActivityIndicator } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { logout } from "../helpers/logout";
@@ -23,8 +23,9 @@ function HomePageSeller({ navigation }) {
   const [productsData, setProductsData] = React.useState([]);
   const [selectedProduct, setSelectedProduct] = React.useState([]);
   const [product, setProduct] = React.useState();
-  const [categories, setCategories] = React.useState();
+  const [categories, setCategories] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState();
+  const [animate, setAnimate] = React.useState(true);
   let icons = [
     require("../assets/icons/art.png"),
     require("../assets/icons/beauty.png"),
@@ -37,44 +38,59 @@ function HomePageSeller({ navigation }) {
   const getProductsData = async () => {
     let token = await SecureStore.getItemAsync("Authorization");
 
-    const products = await axios.get("http://192.168.1.186:8000/api/products", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    console.log("allllll", products);
+    const products = await axios.get(
+      "https://pacific-citadel-62849.herokuapp.com/api/products",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     // setProducts(products);
     return products.data;
   };
   useEffect(() => {
     const fetchData = async () => {
+      // setAnimate(true);
       let token = await SecureStore.getItemAsync("Authorization");
-      const allProducts = await getProductsData();
-      setProductsData(allProducts);
+      // console.log("animate???", animate);
       const categories = await axios.get(
-        "http://192.168.1.186:8000/api/categories",
+        "https://pacific-citadel-62849.herokuapp.com/api/categories",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      const allProducts = await getProductsData();
+      setProductsData(allProducts);
+      const cart = await axios.get(
+        `https://pacific-citadel-62849.herokuapp.com/api/mycart`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      // console.log("thugs-----", cart.data);
+      // setTimeout(() => {
+      setBadgeCount(cart.data.message ? 0 : cart.data.products.length);
+      // }, 1000);
       setCategories(categories.data);
     };
+    setTimeout(() => setAnimate(false), 2500);
     fetchData();
-  }, []);
+  }, [badgeCount]);
 
   const handleBadge = async (product) => {
-    const token = await SecureStore.getItemAsync("Authorization");
-    console.log("adddd", product.id, token);
-    const addToCart = await axios.post(
-      `http://192.168.1.186:8000/api/products/${product.id}/addtocart`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    //console.log("adddd", addToCart);
-    //navigation.navigate("Cart");
-  };
-  const handleAddToCart = async () => {
-    navigation.navigate("Cart");
+    try {
+      // setAnimate(true);
+      const token = await SecureStore.getItemAsync("Authorization");
+      const addToCart = await axios.post(
+        `https://pacific-citadel-62849.herokuapp.com/api/products/${product.id}/addtocart`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setTimeout(() => setAnimate(false), 2500);
+    } catch (error) {
+      console.log("errr", error.response.data);
+    }
   };
 
   return (
@@ -121,7 +137,20 @@ function HomePageSeller({ navigation }) {
             <Image source={require("../assets/search.png")} />
           </View>
         </View>
-        <View style={styles.categoriesCompo}>
+        {/* <View> */}
+        <ActivityIndicator animating={animate} style="large" color="#FF0F00" />
+        {/* </View> */}
+        <View
+          style={[
+            styles.categoriesCompo,
+            {
+              display:
+                categories.length === 0 && productsData.length === 0
+                  ? "none"
+                  : "flex",
+            },
+          ]}
+        >
           <View>
             {/* title */}
             <Text
@@ -152,7 +181,17 @@ function HomePageSeller({ navigation }) {
               })}
           </View>
         </View>
-        <View style={styles.productsCompo}>
+        <View
+          style={[
+            styles.productsCompo,
+            {
+              display:
+                categories.length === 0 && productsData.length === 0
+                  ? "none"
+                  : "flex",
+            },
+          ]}
+        >
           <View>
             {/* title */}
             <Text
@@ -162,7 +201,9 @@ function HomePageSeller({ navigation }) {
                 padding: 10,
               }}
             >
-              Available products
+              {productsData.length === 0
+                ? "No products available"
+                : "Available products"}
             </Text>
           </View>
           <View style={styles.products}>
@@ -181,7 +222,17 @@ function HomePageSeller({ navigation }) {
                         }
                       >
                         <Image
-                          source={require("../assets/products/product1.png")}
+                          style={{
+                            width: 150,
+                            height: 150,
+                            // resizeMode: "center",
+                          }}
+                          source={{
+                            uri:
+                              product.image !== null
+                                ? product.image
+                                : "https://res.cloudinary.com/focus-faith-family/image/upload/v1605697794/vnsj0swzk1therydnapr.jpg",
+                          }}
                         />
                       </TouchableHighlight>
                     </View>

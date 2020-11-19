@@ -8,14 +8,17 @@ const Login = ({ navigation }) => {
   const [phone, setPhone] = React.useState();
   const [password, setPassword] = React.useState();
   loginFunc = async () => {
-    const results = await fetch("http://192.168.1.186:8000/api/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ phone: `250${phone}`, password: password }),
-    });
+    const results = await fetch(
+      "https://pacific-citadel-62849.herokuapp.com/api/login",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phone: `250${phone}`, password: password }),
+      }
+    );
     let data = await results.json();
     if (data.error) return alert(data.error);
 
@@ -23,7 +26,7 @@ const Login = ({ navigation }) => {
     let tok = await SecureStore.getItemAsync("Authorization");
     if (data.user.role !== "seller") return navigation.navigate("Home");
     const myCompanies = await Axios.get(
-      "http://192.168.1.186:8000/api/mycompanies",
+      "https://pacific-citadel-62849.herokuapp.com/api/mycompanies",
       { headers: { Authorization: `Bearer ${tok}` } }
     );
     //console.log(myCompanies.data.length <= 0);

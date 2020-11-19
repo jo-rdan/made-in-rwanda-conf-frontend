@@ -7,10 +7,12 @@ import {
   View,
   Platform,
   StatusBar,
+  TouchableHighlight,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
+import { logout } from "../helpers/logout";
 
 export default function DashBoard({ navigation }) {
   const [company, setCompany] = React.useState(false);
@@ -19,7 +21,7 @@ export default function DashBoard({ navigation }) {
     const getData = async () => {
       const token = await SecureStore.getItemAsync("Authorization");
       const companies = await axios.get(
-        "http://192.168.1.186:8000/api/mycompanies",
+        "https://pacific-citadel-62849.herokuapp.com/api/mycompanies",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,8 +35,12 @@ export default function DashBoard({ navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.headcontainer}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      {/* <View style={styles.headcontainer}>
         <View style={{ top: 25, left: "5%" }}>
           <Image
             source={require("../assets/iconhome.png")}
@@ -42,9 +48,31 @@ export default function DashBoard({ navigation }) {
           />
         </View>
         <Text style={styles.header}>DashBoard</Text>
-        {/* <Button icon="home" style={{ color: "#fff" }}>
+        <View>
+          <TouchableHighlight onPress={() => logout(navigation)}>
+            <Image source={require("../assets/logout.png")} />
+          </TouchableHighlight>
+        </View> */}
+      {/* <Button icon="home" style={{ color: "#fff" }}>
         test
       </Button> */}
+      {/* </View> */}
+      <StatusBar barStyle="light-content" backgroundColor="#1B2646" />
+      <View style={styles.topBar}>
+        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+          <TouchableHighlight onPress={() => navigation.goBack()}>
+            <Image
+              source={require("../assets/back.png")}
+              style={{ width: 20, height: 20 }}
+            />
+          </TouchableHighlight>
+          <Text style={{ color: "#fff", marginLeft: 20 }}>DashBoard</Text>
+        </View>
+        <View style={styles.iconsNav}>
+          <TouchableHighlight onPress={() => logout(navigation)}>
+            <Image source={require("../assets/logout.png")} />
+          </TouchableHighlight>
+        </View>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Button onPress={() => navigation.navigate("Company")} color="#FF0F00">
@@ -121,14 +149,20 @@ export default function DashBoard({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#1B2646",
+    padding: 15,
+  },
   headcontainer: {
     backgroundColor: "#1B2646",
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     width: 411,
     height: 52,
     left: 0,
     top: 0,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
   },
   header: {
     color: "#fff",

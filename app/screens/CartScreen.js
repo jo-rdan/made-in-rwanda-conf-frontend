@@ -12,9 +12,9 @@ function CartScreen(props) {
   const [productPrice, setProductPrice] = React.useState(15000);
   const [animate, setAnimate] = React.useState(false);
   const [products, setProducts] = React.useState(null);
-  const [total, setTotal] = React.useState();
+  // const [total, setTotal] = React.useState();
   // const [productIds, setProductIds] = React.useState([]);
-  //slet total = 0;
+  let total = 0;
   let productIds = [];
   let numberOfItems = [];
   useEffect(() => {
@@ -24,15 +24,18 @@ function CartScreen(props) {
     const fetchData = async () => {
       let token = await SecureStore.getItemAsync("Authorization");
       const productsToCart = await axios.get(
-        "http://192.168.1.186:8000/api/mycart",
+        "https://pacific-citadel-62849.herokuapp.com/api/mycart",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      const chest = await axios.get("http://192.168.1.186:8000/api/checkout", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setTotal(chest.data.total);
+      const chest = await axios.get(
+        "https://pacific-citadel-62849.herokuapp.com/api/checkout",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      // setTotal(chest.data.total);
       setProducts(productsToCart.data.products);
       // const allProducts = await getProductsData();
       // setProductsData(allProducts);
@@ -54,7 +57,7 @@ function CartScreen(props) {
       console.log("product ids", productIds);
 
       const checkout = await axios.post(
-        `http://192.168.1.186:8000/api/checkout`,
+        `https://pacific-citadel-62849.herokuapp.com/api/checkout`,
         {
           id: productIds,
           numberOfItems,
@@ -91,10 +94,10 @@ function CartScreen(props) {
             // setProductIds([...productIds, product.id]);
             productIds.push(product.id.toString());
             numberOfItems.push(items.toString());
-            // total += product.price;
+            total += product.price;
             return (
               <View style={styles.productsBody}>
-                {() => handleTotal(product)}
+                {/* {() => handleTotal(product)} */}
                 <Text>{product.name}</Text>
                 <Text>{product.price} Rwf</Text>
               </View>

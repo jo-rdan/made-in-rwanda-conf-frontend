@@ -8,6 +8,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
@@ -32,7 +33,7 @@ function AddCompany({ navigation }) {
     try {
       const { CName, CAddress, CDescription, CLogo } = userData;
       const results = await axios.post(
-        "http://192.168.1.186:8000/api/companies",
+        "https://pacific-citadel-62849.herokuapp.com/api/companies",
         {
           name: CName,
           address: CAddress,
@@ -104,8 +105,22 @@ function AddCompany({ navigation }) {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.header}>Add Company</Text>
+      <StatusBar barStyle="light-content" backgroundColor="#1B2646" />
+      <View style={styles.topBar}>
+        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+          <TouchableHighlight onPress={() => navigation.goBack()}>
+            <Image
+              source={require("../assets/back.png")}
+              style={{ width: 20, height: 20 }}
+            />
+          </TouchableHighlight>
+          <Text style={{ color: "#fff", marginLeft: 20 }}>Add company</Text>
+        </View>
+        <View style={styles.iconsNav}>
+          <TouchableHighlight onPress={() => logout(navigation)}>
+            <Image source={require("../assets/logout.png")} />
+          </TouchableHighlight>
+        </View>
       </View>
       <View>
         {image && (
@@ -120,9 +135,15 @@ function AddCompany({ navigation }) {
             }}
           />
         )}
-        <TouchableOpacity onPress={pickImage} style={styles.button}>
-          <Text style={styles.buttonText}>Add Image</Text>
-        </TouchableOpacity>
+        <View style={styles.button}>
+          <TouchableOpacity onPress={pickImage}>
+            <Image
+              source={require("../assets/add.png")}
+              style={{ display: image ? "none" : "flex" }}
+            />
+          </TouchableOpacity>
+          <Text style={styles.buttonText}>Add Product</Text>
+        </View>
       </View>
 
       <View style={styles.fields}>
@@ -192,6 +213,12 @@ const styles = StyleSheet.create({
     left: 0,
     top: -3.6,
     justifyContent: "center",
+  },
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#1B2646",
+    padding: 15,
   },
   header: {
     color: "#fff",

@@ -7,6 +7,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import {
   TextInput,
@@ -19,6 +20,7 @@ import * as SecureStore from "expo-secure-store";
 import * as ImagePicker from "expo-image-picker";
 import { Provider as PaperProvider } from "react-native-paper";
 import axios from "axios";
+import { logout } from "../helpers/logout";
 
 function AddProduct({ navigation }) {
   const [userproduct, setUserProduct] = React.useState({
@@ -50,7 +52,7 @@ function AddProduct({ navigation }) {
       const { PName, PPrice, PPhoto, categoryId, companyId } = userproduct;
       console.log("datooooooa", userproduct);
       const results = await axios.post(
-        "http://192.168.1.186:8000/api/company/addproduct",
+        "https://pacific-citadel-62849.herokuapp.com/api/company/addproduct",
         {
           name: PName,
           price: PPrice,
@@ -94,7 +96,7 @@ function AddProduct({ navigation }) {
     })();
     const fetchCompanies = async () => {
       const companies = await axios.get(
-        "http://192.168.1.186:8000/api/companies",
+        "https://pacific-citadel-62849.herokuapp.com/api/companies",
         {
           headers: {
             Authorization: `Bearer ${await SecureStore.getItemAsync(
@@ -108,7 +110,7 @@ function AddProduct({ navigation }) {
     };
     const fetchCategories = async () => {
       const categories = await axios.get(
-        "http://192.168.1.186:8000/api/categories",
+        "https://pacific-citadel-62849.herokuapp.com/api/categories",
         {
           headers: {
             Authorization: `Bearer ${await SecureStore.getItemAsync(
@@ -117,7 +119,7 @@ function AddProduct({ navigation }) {
           },
         }
       );
-      console.log("======", categories.data);
+      // console.log("======", categories.data);
       setCategoriesData(categories.data);
     };
 
@@ -156,8 +158,22 @@ function AddProduct({ navigation }) {
   return (
     <ScrollView>
       <PaperProvider>
-        <View style={styles.container}>
-          <Text style={styles.header}>Add Product</Text>
+        <StatusBar barStyle="light-content" backgroundColor="#1B2646" />
+        <View style={styles.topBar}>
+          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <TouchableHighlight onPress={() => navigation.goBack()}>
+              <Image
+                source={require("../assets/back.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            </TouchableHighlight>
+            <Text style={{ color: "#fff", marginLeft: 20 }}>Add product</Text>
+          </View>
+          <View style={styles.iconsNav}>
+            <TouchableHighlight onPress={() => logout(navigation)}>
+              <Image source={require("../assets/logout.png")} />
+            </TouchableHighlight>
+          </View>
         </View>
         <View>
           {image && (
@@ -172,9 +188,15 @@ function AddProduct({ navigation }) {
               }}
             />
           )}
-          <TouchableOpacity onPress={pickImage} style={styles.button}>
+          <View style={styles.button}>
+            <TouchableOpacity onPress={pickImage}>
+              <Image
+                source={require("../assets/add.png")}
+                style={{ display: image ? "none" : "flex" }}
+              />
+            </TouchableOpacity>
             <Text style={styles.buttonText}>Add Product</Text>
-          </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.fields}>
@@ -313,12 +335,17 @@ function AddProduct({ navigation }) {
 }
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     width: "100%",
     height: 65,
     left: 0,
     top: -3.6,
     justifyContent: "center",
+  },
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#1B2646",
+    padding: 15,
   },
   header: {
     color: "#fff",
@@ -339,14 +366,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginLeft: "8%",
     marginRight: "5%",
-    marginTop: "10%",
+    // marginTop: "10%",
     width: "85%",
+    alignItems: "center",
   },
   buttonText: {
     fontSize: 18,
     color: "#1B2646",
-    padding: 10,
-    paddingStart: 80,
+    // padding: 10,
+    // paddingStart: 80,
   },
 
   // addproduct: {
